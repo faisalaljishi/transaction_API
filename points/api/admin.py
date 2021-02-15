@@ -18,7 +18,7 @@ class BalanceInline(admin.TabularInline):
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('name', 'balance')
+    list_display = ('name', 'totalBalance')
     inlines = [BalanceInline, TransactionInline, FundQueueInline]
 
 @admin.register(Transaction)

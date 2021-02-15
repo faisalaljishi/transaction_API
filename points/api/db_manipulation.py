@@ -29,8 +29,6 @@ class TransactionManager:
     #public methods
     #Adds a transaction to the history and fundsqueue, creates user, payer+balance if they do not exist
     def createTransaction(self, new):
-        if new['points'] <= 0:
-            raise Exception('Error, cannot pay user negative values') #figure out how to raise error correctly
         user, payer, points = new['user'], new['payer'], new['points']#, new['date'], new['id']
         userObj = User.objects.get_or_create(name=new.user)
         payerObj= Payer.objects.get_or_create(name=payer)
@@ -60,8 +58,15 @@ class TransactionManager:
 
 {
         "id": 2,
-        "points": 200,
+        "points": 300,
+        "date": "2021-02-15T01:34:17Z",
+        "user": "Joe Schmoe",
+        "payer": "UNILEVER"
+}
+{
+        "id": 2,
+        "points": -200,
         "date": "2021-02-15T01:34:17Z",
         "user": "Joe Schmoe",
         "payer": "DANNON"
-    }
+}

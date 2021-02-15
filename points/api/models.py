@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models import ForeignKey
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
 from django.urls import reverse
 
 #Contains the name of the user, as well as the total balance coresspnding to all the user's payers
@@ -18,6 +20,7 @@ class User(models.Model):
 
     def __str__(self):
         return str(self.name)
+
 
 #Contains the company, and all the balances it maintains for each user.
 class Payer(models.Model):
@@ -37,27 +40,26 @@ def keyCreate(payer, user):
 class Balance(models.Model):
     user = models.ForeignKey('User', on_delete=models.PROTECT, null=False)
     payer = models.ForeignKey('Payer', on_delete=models.PROTECT, null=False)
-    #name = models.CharField(max_length=200, help_text='Balance key: (Payer.name, User.name)', unique=True, primary_key=True, default=('(Payer.name, User.name)'))
+    key = models.CharField(max_length=200, help_text='Balance key: (Payer.name, User.name)', unique=True, primary_key=True, default=('(Payer.name, User.name)'))
     balance = models.IntegerField(default=0)
 
     def getBalance(self):
         return self.balance
     def updateBalance(self, points):
-        self.totalBalance +=points
+        self.balance +=points
 
     class Meta:
         ordering = ['user']
 
     def __str__(self):
-        return str(self.name)
+        return str(self.key)
 
 #contains all Transactions the server has seen, can be sorted/filtered by user
 class Transaction(models.Model):
     user = models.ForeignKey('User', on_delete=models.PROTECT, null=False)
     payer   = models.ForeignKey('Payer', on_delete=models.PROTECT, null=False)
     points  = models.IntegerField()
-    date    = models.DateTimeField(auto_now=False, auto_now_add=False)
-
+    date    = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     def value(self):
         return self.points
@@ -73,7 +75,7 @@ class FundQueue(models.Model):
     user = models.ForeignKey('User', on_delete=models.PROTECT, null=False)
     payer   = models.ForeignKey('Payer', on_delete=models.PROTECT, null=False)
     points  = models.IntegerField()
-    date    = models.DateTimeField(auto_now=False, auto_now_add=False)
+    date    = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     def value(self):
         return self.points
@@ -83,3 +85,5 @@ class FundQueue(models.Model):
 
     def __str__(self):
         return ', '.join([str(self.payer), str(self.points), str(self.date)])
+
+#signals section
