@@ -1,54 +1,85 @@
-from .models import User, Transaction, Payer, FundQueue, Balance
-from datetime import datetime
+from .models import User, Transaction, Payer, FundQueue, Balance, keyCreate
+from django.shortcuts import get_object_or_404,get_list_or_404
+
+DEBUG = 0
 class TransactionManager:
-    #protected methods
-    # def _userCheck(self, name):
-    #     try:
-    #         acc_obj = User.objects.get(name=name)
-    #     except User.DoesNotExist:
-    #         acc_obj = User(name=name)
-    #     return acc_obj
-    #
-    # def _payerCheck(self, name, user, points):
-    #     try:
-    #         pay_obj = Payer.objects.get(name=name)
-    #         bal_obj = self.balanceCheck(user, pay_obj, points)
-    #     except Payer.DoesNotExist:
-    #         pay_obj = Payer(name=name)
-    #         bal_obj = Balance(user=user, payer=pay_obj, balance=points)
-    #     return pay_obj, bal_obj
-    #
-    # def _balanceCheck(self, user, payer, points):
-    #     try:
-    #         bal_obj = Balance.objects.get(user=user)
-    #         bal_obj.updateBalance(points)
-    #     except Balance.DoesNotExist:
-    #         bal_obj = Balance(user=user, payer=payer, balance=points)
-    #     return bal_obj
 
-    #public methods
-    #Adds a transaction to the history and fundsqueue, creates user, payer+balance if they do not exist
-    def createTransaction(self, new):
-        user, payer, points = new['user'], new['payer'], new['points']#, new['date'], new['id']
-        userObj = User.objects.get_or_create(name=new.user)
-        payerObj= Payer.objects.get_or_create(name=payer)
-        balanceObj = Balance.objects.get_or_create(user=user, payer=payer)
+    def incaseDNE(self, serializer):
+        user, pay = serializer.initial_data['user'], serializer.initial_data['payer']
+        if DEBUG: print(user, pay)
+        userObj, b1 = User.objects.get_or_create(name=user)
+        payerObj, b2 = Payer.objects.get_or_create(name=pay)
+        if DEBUG: print(userObj, payerObj)
+        if DEBUG: print('user,payer are:', b1, b2)
+        userObj.save()
+        payerObj.save()
 
-        User.objects.update_or_create(name=new.user, totalBalance=userObj.totalBalance + points)
-        Balance.objects.update_or_create(user=userObj, payer= payerObj, balance=balanceObj.balance + points)
+    def addTransaction(self, instance):
+        user, payer, points = instance.user, instance.payer, instance.points
+        if DEBUG: print(user, payer, points)
+        # User and payer will always exist, but balance may not.
+        userObj, boolean1 = User.objects.get_or_create(name=user)
+        payerObj, boolean2 = Payer.objects.get_or_create(name=payer)
+        balanceObj, boolean3 = Balance.objects.get_or_create(user=userObj, payer=payerObj, key=keyCreate(payer, user))
 
-        Transaction.objects.create(user=user,
-                    payer=payer,
-                    points=points,
-                    date=datetime.now())
+        if DEBUG:  print(userObj, payerObj, balanceObj)
+        if DEBUG: print(boolean1, boolean2, boolean3)
+        if DEBUG: print(userObj.getBalance(), balanceObj.getBalance())
 
-        FundQueue.objects.create(user=user,
-                  payer=payer,
-                  points=points,
-                  date=datetime.now())
-        user.updateBalance(points)
+        userObj.updateBalance(points)
+        balanceObj.updateBalance(points)
 
+        if DEBUG: print(userObj.getBalance(), balanceObj.getBalance())
 
+        userObj.save()
+        payerObj.save()
+        balanceObj.save()
+
+        fq = FundQueue.objects.create(user=user,
+                                      payer=payer,
+                                      points=points)
+
+    def deductTransaction(self, instance):
+        thisUser, thisPayer, points = instance['user'], instance['payer'], instance['points']
+        fundq = FundQueue.objects.all().filter(user=thisUser)
+        # fundq = get_list_or_404(FundQueue, user=thisUser)
+        thisUserObj = User.objects.get(name=thisUser)
+        thisPayerObj = Payer.objects.get(name=thisPayer)
+        # print(fundq)
+        # print(points)
+        # print(thisUser, thisPayer, points)
+        for fq in fundq:
+            if points >= 0:
+                break
+            currPayer, currPoints = fq.payer, fq.points
+            currPayerObj = Payer.objects.get(name=currPayer)
+            currBalance = Balance.objects.get(key=keyCreate(fq.payer, thisUser)).getBalance()
+            if currPoints >= points:
+                currPoints  -=points
+                currBalance -=points
+                #update total
+                if currPoints != 0:
+                    print('These are the curr:', currPoints)
+                    fq.overwriteValue(currPoints)
+                    fq.save()
+                t = Transaction.objects.create(user=thisUserObj,
+                                               payer=currPayerObj,
+                                               points=-points)
+                t.save()
+                points = 0
+            elif currPoints < points:   #for readablity
+                points      -= currPoints
+                currBalance -= currPoints
+                # update total
+                t = Transaction.objects.create(user=thisUserObj,
+                                               payer=currPayerObj,
+                                               points=-currPoints)
+                t.save()
+                fq.delete()
+
+            p = Payer.objects.get(name=fq.payer)
+            #p.overwriteValue(currBalance)
+            p.save()
 
 
 

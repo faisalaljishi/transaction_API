@@ -48,6 +48,8 @@ class Balance(models.Model):
     def updateBalance(self, points):
         self.balance +=points
 
+    def overwriteBalance(self, points):
+        self.balance = points
     class Meta:
         ordering = ['user']
 
@@ -79,6 +81,9 @@ class FundQueue(models.Model):
 
     def value(self):
         return self.points
+
+    def overwriteValue(self, points):
+        self.points =points
 
     class Meta:
         ordering = ['user','date']

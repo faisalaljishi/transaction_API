@@ -57,6 +57,8 @@ class User:
 
             self.payers[payer] = balance
 
+        if (not self.fundQueue) and value>0:
+            print('something went terribly wrong')
 
         new_funds += self.fundQueue
         self.updateTotal()
