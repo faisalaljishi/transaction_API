@@ -10,14 +10,14 @@ class User(models.Model):
     totalBalance = models.IntegerField(default=0)
 
     def getBalance(self):
-        return self.balance
+        return self.totalBalance
     def updateBalance(self, points):
         self.totalBalance +=points
     class Meta:
         ordering = ['name']
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 #Contains the company, and all the balances it maintains for each user.
 class Payer(models.Model):
@@ -28,12 +28,16 @@ class Payer(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return self.name
+        return str(self.name)
+
+def keyCreate(payer, user):
+    return ', '.join([str(payer), str(user)])
 
 #Helper class to store all the balances of users for each company
 class Balance(models.Model):
-    user = models.OneToOneField('User', on_delete=models.PROTECT, null=False, primary_key=True)
+    user = models.ForeignKey('User', on_delete=models.PROTECT, null=False)
     payer = models.ForeignKey('Payer', on_delete=models.PROTECT, null=False)
+    #name = models.CharField(max_length=200, help_text='Balance key: (Payer.name, User.name)', unique=True, primary_key=True, default=('(Payer.name, User.name)'))
     balance = models.IntegerField(default=0)
 
     def getBalance(self):
@@ -45,7 +49,7 @@ class Balance(models.Model):
         ordering = ['user']
 
     def __str__(self):
-        return str(self.user)
+        return str(self.name)
 
 #contains all Transactions the server has seen, can be sorted/filtered by user
 class Transaction(models.Model):
