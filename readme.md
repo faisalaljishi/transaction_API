@@ -1,15 +1,15 @@
 # Table of contents
 * [About & Directory](#directory)
+* [Task Description](#task-description)
+* [General Design Info](#general-design-info)
+* [Demo](#demo)
+* [Proof of Concept](#proof-of-concept)
 * [API Quickstart](#api-quickstart)
     * [Background](#background)
     * [List](#List)
     * [Create](#create)
     * [Deduct](#deduct) 
 * [Admin](#admin)
-* [Task Description](#task-description)
-* [General Design Info](#general-design-info)
-* [Demo](#demo)
-* [Proof of Concept](#proof-of-concept)
 * [Technologies](#technologies)
 * [Setup](#setup)
 * [About Me](#about-me)
@@ -20,13 +20,13 @@
    This is a Django REST API built to manage a database of users, payers and transactions. It is designed to keep track of where points go and spend the oldest first.
    
    ### Directory
+   To read about the problem, general design choices and to see a visual demo, start at the [Task Description](#task-description) section. It is recommended to start here
+   
    To read more about the main logic of the project navigate to the [Proof of Concept](#proof-of-concept) section.
    
-   To read about an easy way to follow what is occurring in the database, read the [Admin](#admin) section.
+   To read about an easy way to follow what is occurring in the database as you make changes, read the [Admin](#admin) section.
    
-   To read about the problem, general design choices and to see a visual demo, start at the [Task Description](#task-description) section.
-   
-   To learn how to get setup, start at the [Technologies](#technologies) section.
+   To learn how to get set up, start at the [Technologies](#technologies) section.
    
    
 
@@ -103,7 +103,7 @@
 
 ## Admin
   
-   Django provides a wonderful admin panel that can display objects in the database. It also allows you to display all information and  other objects related to an object directly on that same page, in a nice GUI that is quickly generated along with any changes you make.
+   Django provides a wonderful admin panel that can display objects in the database. It also allows you to display all information and other objects related to an object directly on that same page, in a nice GUI that is quickly generated along with any model changes you may make.
    
    If quickly trying to demo/try the project, and you have been given access to the admin panel, the recommended method is accessing the user which you are modifying which will provide a nice view of all the Payers, Balances, Transactions, and FundQueues. 
    
