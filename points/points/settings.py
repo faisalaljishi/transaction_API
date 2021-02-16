@@ -9,7 +9,11 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+#If you updated master and need to merge but keep the hosting branch
+#https://stackoverflow.com/questions/4609841/git-merge-and-keep-separate
+#Use this.
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +29,6 @@ CSRF_COOKIE_SECURE=True
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = '=yafv@r@evdkwx!mvurl#wann_3f4yw)ga+fs^&l2e_a)y4td5'
-import os
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag')
 
 
