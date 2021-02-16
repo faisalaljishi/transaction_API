@@ -1,28 +1,40 @@
-#Table of contents
-* [Directory](#directory)
+# Table of contents
+* [About & Directory](#directory)
 * [API Quickstart](#api-quickstart)
     * [Background](#background)
     * [List](#List)
     * [Create](#create)
     * [Deduct](#deduct) 
+* [Admin](#admin)
 * [Task Description](#task-description)
 * [General Design Info](#general-design-info)
-* [Technologies](#technologies)
 * [Demo](#demo)
-* [Setup](#setup)
-* [Admin](#admin)
 * [Proof of Concept](#proof-of-concept)
+* [Technologies](#technologies)
+* [Setup](#setup)
 * [About Me](#about-me)
 
-##About and Directory
+## About & Directory
    
-   This is a Django REST API built to manage a database
+   ### About
+   This is a Django REST API built to manage a database of users, payers and transactions. It is designed to keep track of where points go and spend the oldest first.
+   
+   ### Directory
+   To read more about the main logic of the project navigate to the [Proof of Concept](#proof-of-concept) section.
+   
+   To read about an easy way to follow what is occurring in the database, read the [Admin](#admin) section.
+   
+   To read about the problem, general design choices and to see a visual demo, start at the [Task Description](#task-description) section.
+   
+   To learn how to get setup, start at the [Technologies](#technologies) section.
+   
+   
 
-##API Quickstart
+## API Quickstart
     
-   ###Background:
+   ### Background:
    
-   To quickly get started with this project visit this [link](http://127.0.0.1:8085/api/), 
+   To quickly get started with this project visit this [link](http://127.0.0.1:8085/api/), (may or may not work depending on if Heroku link is up or not) 
    which links all the API requests possible. Reading the [Admin](#admin) section is also recommended to easily view any changes to the database.
    
    First, we have the All Fields link, which details all the data the database currently contains. Note that most of these are not meant to be modified by the API, the API should only list transactions, award a user points, or charge a user points.
@@ -31,11 +43,11 @@
    
    Read the [Design Info](#general-design-info) section to learn more about the models.
    
-   ###List:
+   ### List:
    
    List is supported by all the models. List simply returns all objects in the database of that type.
    
-   ###Detail:
+   ### Detail:
    
    Detail is supported by all the models. Detail simply returns a given object in the database based on a primary key. You must know the primary key of the object you are trying to find.
    
@@ -49,13 +61,13 @@
    
    FundQueue's primary key is simply the ID number assigned to that fundQueue.
    
-   ###Filter:
+   ### Filter:
    
    Filter is supported by (Balance, Transaction, FundQueue). Filter currently only supports filtering by User.
    
    If you pass a user into a Transaction Filter like so: transaction-filter/"User" (without quotations and with the name of the user), this will return all the Transactions that are recorded under that User.
    
-   ###Create:
+   ### Create:
   
    Create makes a transaction adding points to user and updates all necessary values.
    
@@ -73,7 +85,7 @@
    
    Note: Create only takes positive values. Negative values or zero are not permitted.
    
-   ###Deduct:
+   ### Deduct:
   
    Deduct makes a transaction deducting points from user and updates all necessary values.
    
@@ -87,16 +99,28 @@
    This will deduct the points from the total balance of the user. It will spend the oldest points earned first, 
    and none of the user's payer balances will go negative.
    
-   Note: Deduct only takes negative values. Positive values or zero are not permitted. The value also must equal or be less than the user's total balance. Submitting an invalid value or if the user is does not exist Deduct will return 400 Bad Request.
+   Note: Deduct only takes negative values. Positive values or zero are not permitted. The value also must equal or be less than the user's total balance. Submitting an invalid value or if the user does not exist, the call to Deduct will return 400 Bad Request.
 
-##Task Description
+## Admin
+  
+   Django provides a wonderful admin panel that can display objects in the database. It also allows you to display all information and  other objects related to an object directly on that same page, in a nice GUI that is quickly generated along with any changes you make.
+   
+   If quickly trying to demo/try the project, and you have been given access to the admin panel, the recommended method is accessing the user which you are modifying which will provide a nice view of all the Payers, Balances, Transactions, and FundQueues. 
+   
+   Open a tab with the admin panel, another with the create and deduct links, and you can quickly view what is occurring under the hood after making an API call. 
+   
+   If you do not have access to the admin panel, it is recommended to setup your own instance or open the all fields link. The latter achieves the same result but is less concise and readable. 
+   
+   ![admin](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/admin.PNG)
+   
+## Task Description
   
    Users only see a single balance in their account. These points come from certain payers. The accounting team wants to keep track of where the points are coming from and how they are being spent.
    Design a system that follows these constraints:
    * Oldest points are spent first
    * No payer's balance for a user should go negative.
 
-##General Design Info
+## General Design Info
   
    The database stores 5 types. (User, Payer, Balance, Transaction and FundQueue)
    
@@ -115,14 +139,13 @@
    
    ![pointAPI](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/pointAPI.png)
    
-   Django REST framework is accessed by utilizing serializers, which provides a convenient way to convert a model to a json
-    which provides the frontend to display and test the backend without using a tool like Postman.
+   Django REST framework is accessed by utilizing serializers, which provides a convenient way to convert a model to a JSON. The framework also includes the Response function which provides a quick setup of generic API interacting frontend to display and test the backend without using a tool like Postman.
     
    Signals are also utilized to update the balances or create prerequisite objects by listening for when a Transaction is about to be created.
    
    The admin panel is mostly user generated, but is customized to include related objects.
     
-##Demos
+## Demos
    
    When using the website in a browser, the below should be the first thing you see.
    
@@ -132,7 +155,7 @@
    
    
    Let us add a transaction to the database. Navigate to the create link near the bottom in the overview response. 
-   We supply a json with a user, payer and points for the transaction. 
+   We supply a JSON with a user, payer and points for the transaction. 
    
    ![jamie_1](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_1.PNG)
     
@@ -140,7 +163,7 @@
    
    ![jamie_response_1](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_response_1.PNG)
    
-   What happens under the hood? As we know out database was empty. Lets look at our new user's admin panel. The user and payer did not exist, and they got created. They are initialized to the transaction amount, as they gained that amount from that transaction. 
+   What happens under the hood? As we know our database was empty. Lets look at our new user's admin panel. The user and payer did not exist initially, but along with this transaction, they were created. They are initialized to the transaction amount, as they gained that amount from that transaction. 
    
    ![jamie_admin_1](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_1.PNG)
    
@@ -154,7 +177,7 @@
    
    ![jamie_admin_2](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_2.PNG)
    
-   Now, lets deduct from the user. We navigate to the deduct page from overview, and supply a json with the user and the points.
+   Now, lets deduct from the user. We navigate to the deduct page from overview, and supply a JSON with the user and the points.
    
    ![jamie_4](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_4.PNG)
     
@@ -170,11 +193,15 @@
    
    ![jamie_5](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_5.PNG)
    
-   Here is our admin page after this operation. What is notable here is that our FundQueue is empty, as we have no points to spend, and all balances are 0.
+   Here is our admin page after this operation. What is notable here is that all balances are zero and our FundQueue is empty, as we have no points to spend.
    
    ![jamie_admin_4](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_4.PNG)
    
-##Technologies
+## Proof of Concept
+
+   This was a nifty way to test the main logic of the project. If you are uninterested in the database or Django, take a look at [proof_of_concept.py](https://github.com/faisalaljishi/django_point_API/blob/master/points/proof_of_concept.py) and the related [testing](https://github.com/faisalaljishi/django_point_API/blob/master/points/testing_poc.py) file for the main logic of the project. This file also helped me map out what to do, and which directions to take the project in.
+   
+## Technologies
   
    Project created with the following technologies:
 
@@ -182,7 +209,7 @@
     Django 3.1.6
     Django REST Framework 3.12.2
 
-##Setup
+## Setup
   
    To setup this project, simply download the files, install the requirements and in the ./points/points/ directory, run the following command :
    
@@ -190,17 +217,5 @@
     
    Then navigate to http://127.0.0.1:8085/api/ on your web browser of your choice.
 
-##Admin
-  
-   Django provides a wonderful admin panel that can display objects in the database. It also allows you to display all information and  other objects related to an object directly on that same page, in a nice GUI that is quickly generated along with any changes you make.
-   
-   If quickly trying to demo/try the project, and you have been given access to the admin panel, the recommended method is accessing the user which you are modifying which will provide a nice view of all the Payers, Balances, Transactions, and FundQueues. 
-   
-   Open a tab with the admin panel, another with the create and deduct links, and you can quickly view what is occurring under the hood after making an API call. 
-   
-   If you do not have access to the admin panel, it is recommended to setup your own instance or open the all fields link. The latter achieves the same result but is less concise and readable. 
-   
-   ![admin](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/admin.PNG)
-
-##About Me
+## About Me
    This was my first web development project, and first in Django. I really enjoyed making this project, and learned a good amount about managing a database and back-end engineering.
