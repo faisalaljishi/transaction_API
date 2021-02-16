@@ -6,7 +6,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 
 #Contains the name of the user, as well as the total balance coresspnding to all the user's payers
-#Learn AbstractUser
+#AbstractUser might be a better approach here?
 class User(models.Model):
     name    = models.CharField(max_length=200, help_text='Name of user', unique=True, primary_key=True)
     totalBalance = models.IntegerField(default=0)
@@ -25,7 +25,6 @@ class User(models.Model):
 #Contains the company, and all the balances it maintains for each user.
 class Payer(models.Model):
     name    = models.CharField(max_length=200, help_text='Name of payer', unique=True, primary_key=True)
-    #user = models.ForeignKey('User', on_delete=models.PROTECT, null=False)
 
     class Meta:
         ordering = ['name']
@@ -45,6 +44,7 @@ class Balance(models.Model):
 
     def getBalance(self):
         return self.balance
+
     def updateBalance(self, points):
         self.balance +=points
 
@@ -90,5 +90,3 @@ class FundQueue(models.Model):
 
     def __str__(self):
         return ', '.join([str(self.payer), str(self.points), str(self.date)])
-
-#signals section

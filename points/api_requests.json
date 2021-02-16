@@ -1,0 +1,83 @@
+{'__COMMENT__':'Joe Schmoe Test (1)'},
+{
+        "user": "Joe Schmoe",
+        "payer": "DANNON",
+        "points": 300
+}
+,
+{
+        "user": "Joe Schmoe",
+        "payer": "UNILEVER",
+        "points": 200
+}
+,
+{
+        "user": "Joe Schmoe",
+        "points": -200
+}
+,
+{
+        "user": "Joe Schmoe",
+        "payer": "MILLER COORS",
+        "points": 10000
+}
+,
+{
+        "user": "Joe Schmoe",
+        "payer": "DANNON",
+        "points": 300
+
+}
+,
+{
+        "user": "Joe Schmoe",
+        "points": -5000
+}
+,
+{'__COMMENT__':'Jane Schmoe Test (2)'},
+{
+        "user": "Jane Schmoe",
+        "payer": "DANNON",
+        "points": 600
+}
+,
+{
+        "user": "Jane Schmoe",
+        "payer": "DANNON",
+        "points": 600
+}
+,
+{
+        "user": "Jane Schmoe",
+        "points": -1200
+}
+,
+{
+        "user": "Jane Schmoe",
+        "payer": "MILLER COORS",
+        "points": 800
+}
+,
+{
+        "user": "Jane Schmoe",
+        "payer": "DANNON",
+        "points": 500
+}
+,
+{
+        "user": "Jane Schmoe",
+        "payer": "MILLER COORS",
+        "points": 400
+}
+,
+{
+        "user": "Jane Schmoe",
+        "payer": "UNILEVER",
+        "points": 800
+}
+,
+{
+        "user": "Jane Schmoe",
+        "points": -2500
+}
+,

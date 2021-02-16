@@ -16,14 +16,28 @@ DEBUG = 0
 def overview(request):
     api_urls = {
         'All Fields': 'http://127.0.0.1:8085/api/all/',
-        'Transaction List':'http://127.0.0.1:8085/api/transactions/',
-        'Transaction Detail View': 'http://127.0.0.1:8085/api/transaction-detail/<str:pk>/',
-        #'Filter': 'http://127.0.0.1:8085/api/transaction-filter/<str:user>',
-        'Create' : 'http://127.0.0.1:8085/api/transaction-create/',
-        'Deduct': 'http://127.0.0.1:8085/api/transaction-deduct/',
-        # 'Detail': 'http://127.0.0.1:8085/api/payers',
+        'Lists': '',
+        'User List': 'http://127.0.0.1:8085/api/users/',
+        'Payer List': 'http://127.0.0.1:8085/api/payers/',
+        'Balance List': 'http://127.0.0.1:8085/api/balances/',
+        'Transaction List': 'http://127.0.0.1:8085/api/transactions/',
+        'FundQueue List': 'http://127.0.0.1:8085/api/funds/',
+        'Details': '',
+        'User Detail': 'http://127.0.0.1:8085/api/user-detail/<str:pk>/',
+        'Payer Detail': 'http://127.0.0.1:8085/api/payer-detail/<str:pk>/',
+        'Balance Detail': 'http://127.0.0.1:8085/api/balance-detail/<str:pk>/',
+        'Transaction Detail': 'http://127.0.0.1:8085/api/transaction-detail/<str:pk>/',
+        'FundQueue Detail': 'http://127.0.0.1:8085/api/fund-detail/<str:pk>/',
+        'Filters':'',
+        'Balance Filter': 'http://127.0.0.1:8085/api/balance-filter/<str:pk>',
+        'Transaction Filter': 'http://127.0.0.1:8085/api/transaction-filter/<str:pk>',
+        'FundQueue Filter': 'http://127.0.0.1:8085/api/fund-filter/<str:pk>',
+        'Main Functionality': '',
+        'Create' : 'http://127.0.0.1:8085/api/create/',
+        'Deduct': 'http://127.0.0.1:8085/api/deduct/',
     }
     return Response(api_urls)
+
 @api_view(['GET'])
 def allFields(request):
     user = get_list_or_404(User)
@@ -42,6 +56,48 @@ def allFields(request):
                     transaction_serializer.data,
                     fundqueue_serializer.data,], status=200)
 
+class User_API:
+    @api_view(['GET'])
+    def userList(request):
+        user = get_list_or_404(User)
+        serializer = UserSerializer(user, many=True)
+        return Response(serializer.data,status=200)
+    @api_view(['GET'])
+    def userDetail(request, pk):
+        user = get_object_or_404(User, pk=pk)
+        serializer = UserSerializer(user, many=False)
+        return Response(serializer.data,status=200)
+
+class Payer_API:
+    @api_view(['GET'])
+    def payerList(request):
+        payer = get_list_or_404(Payer)
+        serializer = PayerSerializer(payer, many=True)
+        return Response(serializer.data,status=200)
+    @api_view(['GET'])
+    def payerDetail(request, pk):
+        payer = get_object_or_404(Payer, pk=pk)
+        serializer = PayerSerializer(payer, many=False)
+        return Response(serializer.data,status=200)
+
+class Balance_API:
+    @api_view(['GET'])
+    def balanceList(request):
+        balance = get_list_or_404(Balance)
+        serializer = BalanceSerializer(balance, many=True)
+        return Response(serializer.data,status=200)
+    @api_view(['GET'])
+    def balanceDetail(request, pk):
+        balance = get_object_or_404(Balance, pk=pk)#Balance.objects.get(id=pk)
+        serializer = BalanceSerializer(balance, many=False)
+        return Response(serializer.data,status=200)
+    @api_view(['GET'])
+    def balanceFilter(request, pk):
+        u = get_object_or_404(User, name=pk)
+        balance = get_list_or_404(Balance, user=u)#Balance.objects.get(id=pk)
+        serializer = BalanceSerializer(balance, many=True)
+        return Response(serializer.data, status=200)
+
 class Transaction_API:
     @api_view(['GET'])
     def transactionList(request):
@@ -53,12 +109,12 @@ class Transaction_API:
         transaction = get_object_or_404(Transaction, pk=pk)#Transaction.objects.get(id=pk)
         serializer = TransactionSerializer(transaction, many=False)
         return Response(serializer.data,status=200)
-    # @api_view(['GET'])
-    # def transactionFilter(request, user):
-    #     u = user.get_object_or_404(name=user)
-    #     transaction = get_list_or_404(Transaction, user=u)#Transaction.objects.get(id=pk)
-    #     serializer = TransactionSerializer(transaction, many=True)
-    #     return Response(serializer.data, status=200)
+    @api_view(['GET'])
+    def transactionFilter(request, pk):
+        u = get_object_or_404(User, name=pk)
+        transaction = get_list_or_404(Transaction, user=u)#Transaction.objects.get(id=pk)
+        serializer = TransactionSerializer(transaction, many=True)
+        return Response(serializer.data, status=200)
 
     @api_view(['POST'])
     def transactionCreate(request):
@@ -79,11 +135,69 @@ class Transaction_API:
     @api_view(['POST'])
     def transactionDeduct(request):
         serializer = TransactionSerializer(data = request.data)
-        #makes account and payer if they do not exist
         t =TransactionManager()
-        # t.incaseDNE(serializer)
-        t.deductTransaction(serializer.initial_data)
+        #Could be done with validation but this is simpler for now.
+        user =User.objects.get(name=serializer.initial_data['user'])
+        if not user:
+            return Response({'Error: User does not exist.'}, status=400)
+        if serializer.initial_data['points'] >= 0:
+            return Response({'Error: Deduct only takes negative values.'}, status=400)
+        print(serializer.initial_data['points'], user.getBalance())
+        if -serializer.initial_data['points'] > user.getBalance():
+            return Response({'Error: Not enough funds to deduct this amount of points.'}, status=400)
+        spent = t.deductTransaction(serializer.initial_data)
+        print(spent)
 
-        serializer.is_valid()
-        return Response(serializer.data, status=201)
+        return Response(spent, status=200)
 
+class FundQueue_API:
+    @api_view(['GET'])
+    def fundQueueList(request):
+        fundQueue = get_list_or_404(FundQueue)
+        serializer = FundQueueSerializer(fundQueue, many=True)
+        return Response(serializer.data,status=200)
+    @api_view(['GET'])
+    def fundQueueDetail(request, pk):
+        fundQueue = get_object_or_404(FundQueue, pk=pk)#FundQueue.objects.get(id=pk)
+        serializer = FundQueueSerializer(fundQueue, many=False)
+        return Response(serializer.data,status=200)
+    @api_view(['GET'])
+    def fundQueueFilter(request, pk):
+        u = get_object_or_404(User, name=pk)
+        fundQueue = get_list_or_404(FundQueue, user=u)#FundQueue.objects.get(id=pk)
+        serializer = FundQueueSerializer(fundQueue, many=True)
+        return Response(serializer.data, status=200)
+
+
+
+
+
+
+
+
+#
+# @api_view(['GET'])
+# def userInfo_Balances(request):
+#     # returning payers
+#     user = User.objects.get(name=request.data['user'])
+#     if not user:
+#         return Response({'Error: User does not exist.'}, status=400)
+#     users_balances = get_list_or_404(Balance, user=user)
+#     # payers = Balance.objects.all().filter(user=user)
+#     users_balances = BalanceSerializer(users_balances, many=True)
+#     return Response(users_balances.data, status=201)
+#
+# @api_view(['GET'])
+# def userInfo(request):
+#     # returning payers
+#     user = User.objects.get(name=request.data['user'])
+#     if not user:
+#         return Response({'Error: User does not exist.'}, status=400)
+#
+#     transaction = get_list_or_404(Transaction, user=user)  # Transaction.objects.get(id=pk)
+#     serializer = TransactionSerializer(transaction, many=True)
+#     users_balances = get_list_or_404(Balance, user=user)
+#     # balances = Balance.objects.all().filter(user=user)
+#     users_balances = BalanceSerializer(users_balances, many=True)
+#
+#     return Response(users_balances.data, status=201)
