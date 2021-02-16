@@ -123,6 +123,9 @@ class Transaction_API:
         t =TransactionManager()
         t.incaseDNE(serializer)
 
+        if serializer.initial_data['points'] <= 0:
+            return Response({'Error: Create only takes positive values.'}, status=400)
+
         if serializer.is_valid():
             serializer.save()
             if DEBUG: print('success')
