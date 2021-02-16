@@ -30,7 +30,7 @@
    
    To learn how to get set up, start at the [Technologies](#technologies) section.
    
-   To learn more about using the API, navigate over to the [API Usage](#api-usage) section. This also contains a link to a hosted version of the project. (Not yet up)
+   To learn more about using the API, navigate over to the [API Usage](#api-usage) section. This section also contains a link to a hosted version of the project. (Not yet up)
    
 ## Task Description
   
