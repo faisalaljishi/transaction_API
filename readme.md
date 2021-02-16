@@ -52,7 +52,7 @@
    
    The model Transaction stores a history of all transactions. Each transaction object has the user, payer, points, date and an ID.
    
-   The model FundsQueue is simply a transaction clone that houses a queue of funds to be spent in order. The main difference is that FundsQueue objects can only contain positive points, (these are points to spend) and can be modified and deleted, but Transactions contains a history that cannot be modified and also records deducted points.
+   The model FundsQueue is simply a transaction clone that houses a queue of funds to be spent in order. The main difference is that FundsQueue objects can only contain positive points, (these are points to spend) and can be modified and deleted, but Transactions contains a history that cannot be modified and also records negative points.
     
    Here is a diagram of the above models:
    
@@ -62,7 +62,7 @@
     
    Signals are also utilized to update the balances or create prerequisite objects by listening for when a Transaction is about to be created.
    
-   The admin panel is mostly user generated, but is customized to include related objects.
+   The admin panel is mostly Django generated, but is customized to include related objects.
     
 ## Demo
    
@@ -92,19 +92,19 @@
    
    ![jamie_3](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_3.PNG)
     
-   The user now has 2000 points, 3 Transactions and FundQueues, 2 Payers and 2 Balances of 1000 for the first payer, and 1000 for the second. Let us look at the admin panel displaying this information:
+   The user now has 2000 points, 3 Transactions and 3 FundQueues, 2 Payers and 2 Balances of 1000 for the first payer, and 1000 for the second. Let us look at the admin panel displaying this information:
    
    ![jamie_admin_2](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_2.PNG)
    
    Now, let us deduct from the user. We navigate to the deduct page from overview, and supply a JSON with the user and the points.
    
-   ![jamie_4](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_4.PNG)
+   ![jamie_4](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_4.PNG)
     
    The response:
    
    ![jamie_response_4](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_response_4.PNG)
    
-   Looking at the admin page below, we notice that we took 600 from the first payer, and 400 from the second, rather than taking the entire 1000 from a single payer. This is because we want to spend the oldest points first. Also notice how the Transaction contains a history of what occurred, but FundQueue is now altered. We took the first FundQueue object, spent it entirely, then discarded it, as we can no longer spend it. Then we moved on to the second FundQueue object, took 400 out of it, and kept it, as it still has 600 points we can spend. Finally, notice how the total balance is deducted by the amount provided in the API call.
+   Looking at the admin page below, we notice that we took 600 from the first payer, and 400 from the second, rather than taking the entire 1000 from a single payer. This is because we want to spend the oldest points first. Also notice how the Transaction contains a history of what occurred, but FundQueue is now altered. We took the first FundQueue object, spent it entirely for 600 points, then discarded it, as we can no longer spend it. Then we moved on to the second FundQueue object, took 400 out of it, and kept it, as it still has 600 points we can spend. Finally, notice how the total balance is deducted by the amount provided in the API call.
    
    ![jamie_admin_3](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_3.PNG)
     
@@ -119,6 +119,8 @@
 ## Proof of Concept
 
    This was a nifty way to test the main logic of the project. If you are uninterested in the database or Django, take a look at [proof_of_concept.py](https://github.com/faisalaljishi/django_point_API/blob/master/points/proof_of_concept.py) and the related [testing](https://github.com/faisalaljishi/django_point_API/blob/master/points/testing_poc.py) file for the main logic of the project. This file also helped me map out what to do, and which directions to take the project in.
+  
+  Add more here explaining and relating the project to this code.
       
 
 ## API Usage
@@ -126,7 +128,7 @@
    ### Background:
    
    To quickly get started with this project visit this [link](http://127.0.0.1:8085/api/), (may not work if Heroku link is not up) 
-   which links all the API requests possible. Reading the [Admin](#admin) section is also recommended to easily view any changes to the database.
+   which a hosted version of the project. The page links all the API requests possible. Reading the [Admin](#admin) section is also recommended to easily view any changes to the database.
    
    First, we have the All Fields link, which details all the data the database currently contains. Note that most of these are not meant to be modified by the API, the API should only list database entries, award a user points, or charge a user points.
    
@@ -214,7 +216,7 @@
 
 ## Setup
   
-   To setup this project, simply download the files, install the requirements and in the ./points/points/ directory, run the following command :
+   To setup this project, simply download the files, [install the requirements](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/development_environment) and in the ./points/points/ directory, run the following command :
    
     python manage.py runserver
     
