@@ -86,7 +86,7 @@ class FundQueue(models.Model):
         self.points =points
 
     class Meta:
-        ordering = ['user','date']
+        ordering = ['user', 'date']
 
     def __str__(self):
         return ', '.join([str(self.payer), str(self.points), str(self.date)])

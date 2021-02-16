@@ -1,0 +1,31 @@
+#Joe Schmoe Test (1)
+{
+        "user": "Joe Schmoe",
+        "payer": "DANNON"
+        "points": 300,
+},
+{
+        "user": "Joe Schmoe",
+        "payer": "UNILEVER"
+        "points": 200,
+},
+{
+        "points": -200,
+        "user": "Joe Schmoe"
+},
+{
+        "user": "Joe Schmoe",
+        "payer": "MILLER COORS",
+        "points": 10000
+},
+{
+        "user": "Joe Schmoe",
+        "payer": "DANNON",
+        "points": 300
+
+},
+{
+        "points": -5000,
+        "user": "Joe Schmoe"
+},
+#Jane Schmoe Test (2)

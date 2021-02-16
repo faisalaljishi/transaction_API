@@ -11,6 +11,7 @@ urlpatterns = [
 urlpatterns +=[
     path('transactions/', views.Transaction_API.transactionList, name='transactions'),
     path('transaction-detail/<str:pk>/', views.Transaction_API.transactionDetail, name='transaction-detail'),
+    #path('transaction-filter/', views.Transaction_API.transactionFilter, name='transaction-filter'),
     path('transaction-create/', views.Transaction_API.transactionCreate, name='transaction-create'),
     path('transaction-deduct/', views.Transaction_API.transactionDeduct, name='transaction-deduct'),
 ]

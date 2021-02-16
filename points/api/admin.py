@@ -24,6 +24,7 @@ class UserAdmin(admin.ModelAdmin):
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('user', 'payer', 'points', 'date')
+    list_filter = ('user', 'payer', 'points', 'date')
 
 @admin.register(Payer)
 class PayerAdmin(admin.ModelAdmin):
