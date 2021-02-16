@@ -15,13 +15,11 @@
 * [About Me](#about-me)
 
 ##About and Directory
-   
    This is a Django REST API built to manage a database
 
 ##API Quickstart
     
    ###Background:
-   
    To quickly get started with this project visit this [link](http://127.0.0.1:8085/api/), 
    which links all the API requests possible. Reading the [Admin](#admin) section is also recommended to easily view any changes to the database.
    
@@ -32,11 +30,9 @@
    Read the [Design Info](#general-design-info) section to learn more about the models.
    
    ###List:
-   
    List is supported by all the models. List simply returns all objects in the database of that type.
    
    ###Detail:
-   
    Detail is supported by all the models. Detail simply returns a given object in the database based on a primary key. You must know the primary key of the object you are trying to find.
    
    User's primary key is simply the name of that user.
@@ -50,13 +46,11 @@
    FundQueue's primary key is simply the ID number assigned to that fundQueue.
    
    ###Filter:
-   
    Filter is supported by (Balance, Transaction, FundQueue). Filter currently only supports filtering by User.
    
    If you pass a user into a Transaction Filter like so: transaction-filter/"User" (without quotations and with the name of the user), this will return all the Transactions that are recorded under that User.
    
    ###Create:
-  
    Create makes a transaction adding points to user and updates all necessary values.
    
    To use create simply visit the page, and supply a JSON of this structure:
@@ -74,7 +68,6 @@
    Note: Create only takes positive values. Negative values or zero are not permitted.
    
    ###Deduct:
-  
    Deduct makes a transaction deducting points from user and updates all necessary values.
    
    To use deduct simply visit the page, and supply a JSON of this structure:
@@ -90,14 +83,12 @@
    Note: Deduct only takes negative values. Positive values or zero are not permitted. The value also must equal or be less than the user's total balance. Submitting an invalid value or if the user is does not exist Deduct will return 400 Bad Request.
 
 ##Task Description
-  
    Users only see a single balance in their account. These points come from certain payers. The accounting team wants to keep track of where the points are coming from and how they are being spent.
    Design a system that follows these constraints:
    * Oldest points are spent first
    * No payer's balance for a user should go negative.
 
 ##General Design Info
-  
    The database stores 5 types. (User, Payer, Balance, Transaction and FundQueue)
    
    User stores all the names of users.
@@ -113,7 +104,7 @@
     
    Here is a diagram of the above models:
    
-   ![pointAPI](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/pointAPI.png)
+   ![pointAPI](./files/pointAPI.png)
    
    Django REST framework is accessed by utilizing serializers, which provides a convenient way to convert a model to a json
     which provides the frontend to display and test the backend without using a tool like Postman.
@@ -128,54 +119,53 @@
    
    Assuming that the database is empty. Most calls will return a 404 as there is nothing in the database to display.
    
-   ![overview](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/overview.PNG)
+   ![overview](./files/overview.png)
    
    
    Let us add a transaction to the database. Navigate to the create link near the bottom in the overview response. 
    We supply a json with a user, payer and points for the transaction. 
    
-   ![jamie_1](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_1.PNG)
+   ![jamie_1](./files/jamie_1.png)
     
    This is the response we get:
    
-   ![jamie_response_1](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_response_1.PNG)
+   ![jamie_response_1](./files/jamie_response_1.png)
    
    What happens under the hood? As we know out database was empty. Lets look at our new user's admin panel. The user and payer did not exist, and they got created. They are initialized to the transaction amount, as they gained that amount from that transaction. 
    
-   ![jamie_admin_1](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_1.PNG)
+   ![jamie_admin_1](./files/jamie_admin_1.png)
    
    Let us another two transaction to the database. The responses are similar to before.
    
-   ![jamie_2](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_2.PNG)
+   ![jamie_2](./files/jamie_2.png)
    
-   ![jamie_3](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_3.PNG)
+   ![jamie_3](./files/jamie_3.png)
     
    The user now has 2000 points, 3 Transactions and FundQueues, 2 Payers and 2 Balances of 1000 for the first payer, and 1000 for the second. Lets look at the admin panel displaying this information:
    
-   ![jamie_admin_2](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_2.PNG)
+   ![jamie_admin_2](./files/jamie_admin_2.png)
    
    Now, lets deduct from the user. We navigate to the deduct page from overview, and supply a json with the user and the points.
    
-   ![jamie_4](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_4.PNG)
+   ![jamie_4](./files/jamie_4.png)
     
    The response:
    
-   ![jamie_response_4](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_response_4.PNG)
+   ![jamie_response_4](./files/jamie_response_4.png)
    
    Looking at the admin page below, we notice that we took 600 from the first payer, and 400 from the second, rather than taking the entire 1000 from a single payer. This is because we want to spend the oldest points first. Also notice how the Transaction contains a history of what occurred, but FundQueue is now altered. We took the first FundQueue object, spent it entirely, then discarded it, as we can no longer spend it. Then we moved on to the second FundQueue object, took 400 out of it, and kept it, as it still has 600 points we can spend. Finally notice how the total balance is deducted by the amount.
    
-   ![jamie_admin_3](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_3.PNG)
+   ![jamie_admin_3](./files/jamie_admin_3.png)
     
    Let us deduct by 1000 again:
    
-   ![jamie_5](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_5.PNG)
+   ![jamie_5](./files/jamie_5.png)
    
    Here is our admin page after this operation. What is notable here is that our FundQueue is empty, as we have no points to spend, and all balances are 0.
    
-   ![jamie_admin_4](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_4.PNG)
+   ![jamie_admin_4](./files/jamie_admin_4.png)
    
 ##Technologies
-  
    Project created with the following technologies:
 
     Python 3.7
@@ -183,7 +173,6 @@
     Django REST Framework 3.12.2
 
 ##Setup
-  
    To setup this project, simply download the files, install the requirements and in the ./points/points/ directory, run the following command :
    
     python manage.py runserver
@@ -191,7 +180,6 @@
    Then navigate to http://127.0.0.1:8085/api/ on your web browser of your choice.
 
 ##Admin
-  
    Django provides a wonderful admin panel that can display objects in the database. It also allows you to display all information and  other objects related to an object directly on that same page, in a nice GUI that is quickly generated along with any changes you make.
    
    If quickly trying to demo/try the project, and you have been given access to the admin panel, the recommended method is accessing the user which you are modifying which will provide a nice view of all the Payers, Balances, Transactions, and FundQueues. 
@@ -200,7 +188,7 @@
    
    If you do not have access to the admin panel, it is recommended to setup your own instance or open the all fields link. The latter achieves the same result but is less concise and readable. 
    
-   ![admin](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/admin.PNG)
+   ![admin](./files/admin.png)
 
 ##About Me
-   This was my first web development project, and first in Django. I really enjoyed making this project, and learned a good amount about managing a database and back-end engineering.
+   This was my first project in Django.
