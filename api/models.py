@@ -4,6 +4,7 @@ from django.db.models import ForeignKey
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.urls import reverse
+#Ryan test
 
 #Contains the name of the user, as well as the total balance coresspnding to all the user's payers
 #AbstractUser might be a better approach here?
