@@ -3,6 +3,7 @@
 * [Task Description](#task-description)
 * [General Design Info](#general-design-info)
 * [Demo](#demo)
+* [Try it](#try-it)
 * [Proof of Concept](#proof-of-concept)
 * [API Usage](#api-usage)
     * [Background](#background)
@@ -24,7 +25,7 @@
    
    To read about the problem, general design choices and to see a visual demo, start at the [Task Description](#task-description) section. It is recommended to start here.
    
-   To read more about the main logic of the project navigate, to the [Proof of Concept](#proof-of-concept) section.
+   To read more about the main logic of the project navigate, to the [Proof of Concept](#proof-of-concept) section. This section also relates the Django Models to simpler data structures to better understand their usage.
    
    To read about an easy way to follow what is occurring in the database as you make changes, read the [Admin](#admin) section.
    
@@ -118,11 +119,54 @@
    
    ![jamie_admin_4](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_4.PNG)
    
+## Try it
+
+To try the app for yourself, use this [link](https://django-points-api.herokuapp.com/api/). The database is initialized with some test data. This [link](https://django-points-api.herokuapp.com/api/overview) will show you all the information the database contains.
+
+All Fields and the list links are self explanatory, simply click the links.
+
+Detail and Filter require a primary key to pull up the specific object desired. An object with that primary key must exist or a 404 will be returned. Read more from the [Api Usage](#api-usage) section to learn about the primary keys.
+
+[Joe Schmoe User Detail](http://django-points-api.herokuapp.com/api/user-detail/Joe%20Schmoe/)
+
+[Jane Schmoe User Detail](http://django-points-api.herokuapp.com/api/user-detail/Jane%20Schmoe/)
+
+[Dannon Payer Detail](http://django-points-api.herokuapp.com/api/payer-detail/DANNON/)
+
+[Dannon, Joe Schmoe Balance Detail](http://django-points-api.herokuapp.com/api/balance-detail/DANNON,%20Joe%20Schmoe/)
+
+Transactions and FundQueue objects require you to know the specific ID of the object you are looking for.
+
+[Transaction Detail](http://django-points-api.herokuapp.com/api/transaction-detail/3/)
+
+Let us say we want to see the all the payer balances of a single user. Using the balance filter link:
+
+[Joe Schmoe Balance Filter](http://django-points-api.herokuapp.com/api/balance-filter/Joe%20Schmoe/)
+
+All the transactions or fundqueue objects related to a single user:
+
+[Joe Schmoe Transaction Filter](http://django-points-api.herokuapp.com/api/transaction-filter/Joe%20Schmoe/)
+[Joe Schmoe FundQueue Filter](http://django-points-api.herokuapp.com/api/fund-filter/Joe%20Schmoe/)
+
+For the main application functionality we have [create](#create) and [deduct](#deduct). The previous links are to the respective API Usage sections where you can read more about their usage.
+
+[Create](http://django-points-api.herokuapp.com/api/create/)
+[Deduct](http://django-points-api.herokuapp.com/api/deduct/)
+
 ## Proof of Concept
 
    This was a nifty way to test the main logic of the project. If you are uninterested in the database or Django, take a look at [proof_of_concept.py](https://github.com/faisalaljishi/django_point_API/blob/master/points/proof_of_concept.py) and the related [testing](https://github.com/faisalaljishi/django_point_API/blob/master/points/testing_poc.py) file for the main logic of the project. This file also helped me map out what to do, and which directions to take the project in.
   
-  Add more here explaining and relating the project to this code.
+  The Django User Model corresponds to `class User` in the proof_of_concept. In django we create a new user by making a new User Model object and similarly, we create new users by creating a new object in the proof_of_concept.py file.
+  
+  The Django Payer Model corresponds to the dictionary (hash map) `self.payers = {}`. In proof_of_concept, this set contains the pairs {"payer_name": balance}.
+  
+  The Django Balance Model corresponds to the balances within the self.payers dictionary in proof_of_concept. The Balance Model is a little more complicated, but we can think of it as a dictionary that uses key built from the names of the {"payer, user": balance}
+  
+  The Django Transaction Model corresponds to `self.transactionHistory` list and both work very similarly.
+  
+  The Django FundQueue Model corresponds to `self.fundQueue` queue and they both work very similarly.
+  
       
 
 ## API Usage
@@ -244,7 +288,9 @@
         git push heroku hosting:master
         heroku run python manage.py migrate
         heroku open
+   
+   Follow [this guide](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Deployment) to deploy a project from Django to Heroku.
         
         
 ## About Me
-   This was my first web development project, and first in Django. I really enjoyed making this project, and learned a good amount about managing a database and back-end engineering. I am unsure if I used best practices, as I did not know Django a week ago. It is a learning process.
+   This was my first project in Django, and first web development project involving a database. I really enjoyed making this project, and about managing a database and back-end engineering. I tried to implement best practices, but I am still learning about Django.
