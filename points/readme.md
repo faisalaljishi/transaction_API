@@ -226,5 +226,8 @@
 
         git subtree push --prefix points heroku master
         heroku run python manage.py migrate
+        
+        #to reset database in heroku
+        heroku run heroku restart && heroku pg:reset DATABASE --confirm django-points-api && heroku run rake db:migrate
 ## About Me
    This was my first web development project, and first in Django. I really enjoyed making this project, and learned a good amount about managing a database and back-end engineering. I am unsure if I used best practices, as I did not know Django a week ago. It is a learning process.
