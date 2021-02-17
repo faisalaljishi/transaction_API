@@ -59,7 +59,9 @@ def allFields(request):
 class User_API:
     @api_view(['GET'])
     def userList(request):
+        print(User)
         user = get_list_or_404(User)
+        print(user)
         serializer = UserSerializer(user, many=True)
         return Response(serializer.data,status=200)
     @api_view(['GET'])
@@ -123,7 +125,7 @@ class Transaction_API:
         t =TransactionManager()
         t.incaseDNE(serializer)
 
-        if serializer.initial_data['points'] <= 0:
+        if int(serializer.initial_data['points']) <= 0:
             return Response({'Error: Create only takes positive values.'}, status=400)
 
         if serializer.is_valid():
@@ -143,7 +145,7 @@ class Transaction_API:
         user =User.objects.get(name=serializer.initial_data['user'])
         if not user:
             return Response({'Error: User does not exist.'}, status=400)
-        if serializer.initial_data['points'] >= 0:
+        if int(serializer.initial_data['points']) >= 0:
             return Response({'Error: Deduct only takes negative values.'}, status=400)
         print(serializer.initial_data['points'], user.getBalance())
         if -serializer.initial_data['points'] > user.getBalance():
