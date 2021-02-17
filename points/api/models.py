@@ -39,7 +39,7 @@ def keyCreate(payer, user):
 class Balance(models.Model):
     user = models.ForeignKey('User', on_delete=models.PROTECT, null=False)
     payer = models.ForeignKey('Payer', on_delete=models.PROTECT, null=False)
-    key = models.CharField(max_length=200, help_text='Balance key: (Payer.name, User.name)', unique=True, primary_key=True, default=('(Payer.name, User.name)'))
+    key = models.CharField(max_length=200, help_text='Balance key: (Payer.name, User.name)', unique=True, primary_key=True)
     balance = models.IntegerField(default=0)
 
     def getBalance(self):
