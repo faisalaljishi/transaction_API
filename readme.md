@@ -30,7 +30,9 @@
    
    To learn how to get set up, start at the [Technologies](#technologies) section.
    
-   To learn more about using the API, navigate over to the [API Usage](#api-usage) section. This section also contains a link to a hosted version of the project. (Not yet up)
+   To learn more about using the API, navigate over to the [API Usage](#api-usage) section. 
+   
+   For a [link to a hosted version](https://django-points-api.herokuapp.com/api/) of the project to quickly test and run without local installation. 
    
 ## Task Description
   
@@ -127,7 +129,7 @@
     
    ### Background:
    
-   To quickly get started with this project visit this [link](http://127.0.0.1:8085/api/), (may not work if Heroku link is not up) 
+   To quickly get started with this project visit this [link](https://django-points-api.herokuapp.com/api/16), (may not work if Heroku link is not up) 
    which a hosted version of the project. The page links all the API requests possible. Reading the [Admin](#admin) section is also recommended to easily view any changes to the database.
    
    First, we have the All Fields link, which details all the data the database currently contains. Note that most of these are not meant to be modified by the API, the API should only list database entries, award a user points, or charge a user points.
@@ -208,11 +210,26 @@
    
 ## Technologies
   
-   Project created with the following technologies:
+   Project created locally with the following technologies:
 
-    Python 3.7
+    Python 3.7.10
     Django 3.1.6
     Django REST Framework 3.12.2
+    
+   For the production version the requirements as they are in requirements.txt:
+        
+        asgiref==3.3.1
+        dj-database-url==0.5.0
+        Django==3.1.6
+        django-heroku==0.3.1
+        djangorestframework==3.12.2
+        gunicorn==20.0.4
+        psycopg2==2.8.6
+        psycopg2-binary==2.8.6
+        pytz==2021.1
+        sqlparse==0.4.1
+        whitenoise==5.2.0
+
 
 ## Setup
   
@@ -222,14 +239,12 @@
     
    Then navigate to http://127.0.0.1:8085/api/ on your web browser of your choice.
     
-   To deploy use the hosting branch, and push only the points sub directory using [this](https://stackoverflow.com/questions/7539382/how-can-i-deploy-push-only-a-subdirectory-of-my-git-repo-to-heroku)
+   To deploy use the hosting branch which is produced for set up with heroku.
 
         git push heroku hosting:master
-        git subtree push --prefix points heroku master
         heroku run python manage.py migrate
+        heroku open
         
         
-        #to reset database in heroku
-        heroku run heroku restart && heroku pg:reset DATABASE --confirm django-points-api && heroku run rake db:migrate
 ## About Me
    This was my first web development project, and first in Django. I really enjoyed making this project, and learned a good amount about managing a database and back-end engineering. I am unsure if I used best practices, as I did not know Django a week ago. It is a learning process.
