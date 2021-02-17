@@ -28,7 +28,7 @@ class TransactionManager:
         # User and payer will always exist because incaseDNE is called before addTransaction, but balance may or may not exist.
         userObj, boolean1 = User.objects.get_or_create(name=user)
         payerObj, boolean2 = Payer.objects.get_or_create(name=payer)
-        balanceObj, boolean3 = Balance.objects.get_or_create(user=userObj, payer=payerObj, key=keyCreate(payer, user))
+        balanceObj, boolean3 = Balance.objects.get_or_create(key=keyCreate(payer, user))
 
         if DEBUG:  print(userObj, payerObj, balanceObj)
         if DEBUG: print(boolean1, boolean2, boolean3)
