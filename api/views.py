@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from .models import User, Transaction, Payer, FundQueue, Balance
 from .serializers import TransactionSerializer, PayerSerializer, UserSerializer, BalanceSerializer, FundQueueSerializer
 from .db_manipulation import TransactionManager
-from ..points.settings  import DEBUG
+from points.settings import DEBUG
 
 # Create your views here.
 @api_view(['GET'])
