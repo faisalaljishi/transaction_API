@@ -224,8 +224,10 @@
     
    To deploy use the hosting branch, and push only the points sub directory using [this](https://stackoverflow.com/questions/7539382/how-can-i-deploy-push-only-a-subdirectory-of-my-git-repo-to-heroku)
 
+        git push heroku hosting:master
         git subtree push --prefix points heroku master
         heroku run python manage.py migrate
+        
         
         #to reset database in heroku
         heroku run heroku restart && heroku pg:reset DATABASE --confirm django-points-api && heroku run rake db:migrate
