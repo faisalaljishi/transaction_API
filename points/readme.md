@@ -225,5 +225,6 @@
    To deploy use the hosting branch, and push only the points sub directory using [this](https://stackoverflow.com/questions/7539382/how-can-i-deploy-push-only-a-subdirectory-of-my-git-repo-to-heroku)
 
         git subtree push --prefix points heroku master
+        heroku run python manage.py migrate
 ## About Me
    This was my first web development project, and first in Django. I really enjoyed making this project, and learned a good amount about managing a database and back-end engineering. I am unsure if I used best practices, as I did not know Django a week ago. It is a learning process.
