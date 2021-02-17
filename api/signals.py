@@ -3,8 +3,8 @@ from django.dispatch import receiver
 from .models import User, Transaction, Payer, FundQueue, Balance, keyCreate
 from .db_manipulation import TransactionManager
 from django.db.models.signals import pre_save, post_save
+from ..points.settings  import DEBUG
 
-DEBUG = 0
 # pre_save method signal for Transaction
 @receiver(signals.pre_save, sender=Transaction)
 def createTransactionPre(sender, instance, **kwargs):

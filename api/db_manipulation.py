@@ -1,7 +1,7 @@
 from .models import User, Transaction, Payer, FundQueue, Balance, keyCreate
 from django.shortcuts import get_object_or_404,get_list_or_404
+from ..points.settings  import DEBUG
 
-DEBUG = 0
 class TransactionManager:
 
     #Creates user, payer and balance if they do not exist
