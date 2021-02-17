@@ -25,7 +25,7 @@
    
    To read about the problem, general design choices and to see a visual demo, start at the [Task Description](#task-description) section. It is recommended to start here.
    
-   To read more about the main logic of the project navigate, to the [Proof of Concept](#proof-of-concept) section. This section also relates the Django Models to simpler data structures to better understand their usage.
+   To read more about the main logic of the project navigate, to the [Proof of Concept](#proof-of-concept) section. This section also relates the Django Models to simpler data structures to better understanding their usage.
    
    To read about an easy way to follow what is occurring in the database as you make changes, read the [Admin](#admin) section.
    
@@ -123,35 +123,42 @@
 
 To try the app for yourself, use this [link](https://django-points-api.herokuapp.com/api/). The database is initialized with some test data. This [link](https://django-points-api.herokuapp.com/api/overview) will show you all the information the database contains.
 
-All Fields and the list links are self explanatory, simply click the links.
+[All Fields](https://django-points-api.herokuapp.com/api/user-detail) and the list links are self explanatory, simply click the links. The database should be empty, so we should get back a 404 not found response.
+
+Now let us add some data to the database. Take a look at the api_requests.json for the sample data that we will send.
+
+
+
 
 Detail and Filter require a primary key to pull up the specific object desired. An object with that primary key must exist or a 404 will be returned. Read more from the [Api Usage](#api-usage) section to learn about the primary keys.
 
-[Joe Schmoe User Detail](http://django-points-api.herokuapp.com/api/user-detail/Joe%20Schmoe/)
+[Joe Schmoe User Detail](https://django-points-api.herokuapp.com/api/user-detail/Joe%20Schmoe/)
 
-[Jane Schmoe User Detail](http://django-points-api.herokuapp.com/api/user-detail/Jane%20Schmoe/)
+[Jane Schmoe User Detail](https://django-points-api.herokuapp.com/api/user-detail/Jane%20Schmoe/)
 
-[Dannon Payer Detail](http://django-points-api.herokuapp.com/api/payer-detail/DANNON/)
+[Dannon Payer Detail](https://django-points-api.herokuapp.com/api/payer-detail/DANNON/)
 
-[Dannon, Joe Schmoe Balance Detail](http://django-points-api.herokuapp.com/api/balance-detail/DANNON,%20Joe%20Schmoe/)
+[Dannon, Joe Schmoe Balance Detail](https://django-points-api.herokuapp.com/api/balance-detail/DANNON,%20Joe%20Schmoe/)
 
 Transactions and FundQueue objects require you to know the specific ID of the object you are looking for.
 
-[Transaction Detail](http://django-points-api.herokuapp.com/api/transaction-detail/3/)
+[Transaction Detail](https://django-points-api.herokuapp.com/api/transaction-detail/3/)
 
 Let us say we want to see the all the payer balances of a single user. Using the balance filter link:
 
-[Joe Schmoe Balance Filter](http://django-points-api.herokuapp.com/api/balance-filter/Joe%20Schmoe/)
+[Joe Schmoe Balance Filter](https://django-points-api.herokuapp.com/api/balance-filter/Joe%20Schmoe/)
 
 All the transactions or fundqueue objects related to a single user:
 
-[Joe Schmoe Transaction Filter](http://django-points-api.herokuapp.com/api/transaction-filter/Joe%20Schmoe/)
-[Joe Schmoe FundQueue Filter](http://django-points-api.herokuapp.com/api/fund-filter/Joe%20Schmoe/)
+[Joe Schmoe Transaction Filter](https://django-points-api.herokuapp.com/api/transaction-filter/Joe%20Schmoe/)
 
-For the main application functionality we have [create](#create) and [deduct](#deduct). The previous links are to the respective API Usage sections where you can read more about their usage.
+[Joe Schmoe FundQueue Filter](https://django-points-api.herokuapp.com/api/fund-filter/Joe%20Schmoe/)
 
-[Create](http://django-points-api.herokuapp.com/api/create/)
-[Deduct](http://django-points-api.herokuapp.com/api/deduct/)
+For the main application functionality we have [create](#create) and [deduct](#deduct). The previous links are to the respective API Usage sections where you can read more about their usage. The below links are redirect to the website.
+
+[Create](https://django-points-api.herokuapp.com/api/create/)
+
+[Deduct](https://django-points-api.herokuapp.com/api/deduct/)
 
 ## Proof of Concept
 
@@ -260,7 +267,7 @@ For the main application functionality we have [create](#create) and [deduct](#d
     Django 3.1.6
     Django REST Framework 3.12.2
     
-   For the production version the requirements as they are in requirements.txt:
+   For the production version the requirements are:
         
         asgiref==3.3.1
         dj-database-url==0.5.0
@@ -281,7 +288,7 @@ For the main application functionality we have [create](#create) and [deduct](#d
    
     python manage.py runserver
     
-   Then navigate to http://127.0.0.1:8000/api/ on your web browser of your choice.
+   Then navigate to https://127.0.0.1:8000/api/ on your web browser of your choice.
     
    To deploy use the hosting branch which is produced for set up with heroku.
 
