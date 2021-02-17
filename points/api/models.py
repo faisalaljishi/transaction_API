@@ -41,6 +41,7 @@ class Balance(models.Model):
     payer = models.ForeignKey('Payer', on_delete=models.PROTECT, null=False)
     key = models.CharField(max_length=200, help_text='Balance key: (Payer.name, User.name)', unique=True, default=('(Payer.name, User.name)'))
     balance = models.IntegerField(default=0)
+    id = models.IntegerField(default=0, unique=True, primary_key=True)
 
     def getBalance(self):
         return self.balance
