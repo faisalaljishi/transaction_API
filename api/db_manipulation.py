@@ -1,6 +1,6 @@
 from .models import User, Transaction, Payer, FundQueue, Balance, keyCreate
 from django.shortcuts import get_object_or_404,get_list_or_404
-from ..points.settings  import DEBUG
+from points.settings import DEBUG
 
 class TransactionManager:
 
