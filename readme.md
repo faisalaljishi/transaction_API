@@ -281,11 +281,12 @@ For the main application functionality we have [create](#create) and [deduct](#d
    
     python manage.py runserver
     
-   Then navigate to http://127.0.0.1:8085/api/ on your web browser of your choice.
+   Then navigate to http://127.0.0.1:8000/api/ on your web browser of your choice.
     
    To deploy use the hosting branch which is produced for set up with heroku.
 
-        git push heroku hosting:master
+        git push heroku master
+        git push heroku hosting:master 
         heroku run python manage.py migrate
         heroku open
    
