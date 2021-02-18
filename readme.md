@@ -123,7 +123,7 @@
 
 To try the app for yourself, use this [link](https://django-points-api.herokuapp.com/api/). The link will display all the API calls the database can perform.
 
-The database will initially be empty. The database should be empty because it is configured for SQLite3, and Heroku restarts will cause the files to get wiped around each day or each time the code is updated.
+The database will initially be empty. The database should be empty because it is configured for SQLite3, and Heroku restarts will cause the files to get wiped around each day or each time the code is updated. This is convenient for now, as having an empty database makes it easy to demo and test. We can migrate to a database like Postgres for a more permanent data storage solution.
 
 Now let us add some data to the database. Since the database is empty we should run [test_fill.sh](test_fill.sh) or [test_fill.cmd](test_fill.cmd) to initialize it with some test users and test transactions. Take a look at the [api_requests.json](api_requests.json) for the sample data that will be sent. Note that you don't need to download the entire directory, rather simply [test_fill.sh](test_fill.sh) to autofill the server. You could also skip this step and rather go directly to the [create link](https://django-points-api.herokuapp.com/api/create) and fill data in manually.
 
