@@ -7,7 +7,7 @@ from django.urls import reverse
 #Ryan test
 
 #Contains the name of the user, as well as the total balance coresspnding to all the user's payers
-#AbstractUser might be a better approach here?
+#AbstractUser might be a better approach here for authentication if full stack development with django.
 class User(models.Model):
     name    = models.CharField(max_length=200, help_text='Name of user', unique=True, primary_key=True)
     totalBalance = models.IntegerField(default=0)

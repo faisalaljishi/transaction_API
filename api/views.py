@@ -11,7 +11,7 @@ from .serializers import TransactionSerializer, PayerSerializer, UserSerializer,
 from .db_manipulation import TransactionManager
 from points.settings import DEBUG
 
-# Create your views here.
+# Landing /api/ page
 @api_view(['GET'])
 def overview(request):
     api_urls = {

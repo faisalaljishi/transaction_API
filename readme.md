@@ -59,7 +59,7 @@
     
    Here is a diagram of the above models:
    
-   ![pointAPI](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/pointAPI.png)
+   ![pointAPI](files/pointAPI.png)
    
    Django REST framework is accessed by utilizing serializers, which provides a convenient way to convert a model to a JSON. The framework also includes the Response function which provides a quick setup of generic API interacting frontend to display and test the backend without using a tool like Postman.
     
@@ -73,51 +73,51 @@
    
    Assuming that the database is empty. Most calls will return a 404 as there is nothing in the database to display.
    
-   ![overview](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/overview.PNG)
+   ![overview](files/overview.PNG)
    
    
    Let us add a transaction to the database. Navigate to the create link near the bottom in the overview response. 
    We supply a JSON with a user, payer and points for the transaction. 
    
-   ![jamie_1](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_1.PNG)
+   ![jamie_1](files/jamie_1.PNG)
     
    This is the response we get:
    
-   ![jamie_response_1](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_response_1.PNG)
+   ![jamie_response_1](files/jamie_response_1.PNG)
    
    What happens under the hood? As we know our database was empty. Let us look at our new user's admin panel. The user and payer did not exist initially, but along with this transaction, they were created. They are initialized to the transaction amount, as they gained that amount from that transaction. 
    
-   ![jamie_admin_1](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_1.PNG)
+   ![jamie_admin_1](files/jamie_admin_1.PNG)
    
    Let us add another two transaction to the database. The responses are similar to before.
    
-   ![jamie_2](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_2.PNG)
+   ![jamie_2](files/jamie_2.PNG)
    
-   ![jamie_3](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_3.PNG)
+   ![jamie_3](files/jamie_3.PNG)
     
    The user now has 2000 points, 3 Transactions and 3 FundQueues, 2 Payers and 2 Balances of 1000 for the first payer, and 1000 for the second. Let us look at the admin panel displaying this information:
    
-   ![jamie_admin_2](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_2.PNG)
+   ![jamie_admin_2](files/jamie_admin_2.PNG)
    
    Now, let us deduct from the user. We navigate to the deduct page from overview, and supply a JSON with the user and the points.
    
-   ![jamie_4](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_4.PNG)
+   ![jamie_4](files/jamie_4.PNG)
     
    The response:
    
-   ![jamie_response_4](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_response_4.PNG)
+   ![jamie_response_4](files/jamie_response_4.PNG)
    
    Looking at the admin page below, we notice that we took 600 from the first payer, and 400 from the second, rather than taking the entire 1000 from a single payer. This is because we want to spend the oldest points first. Also notice how the Transaction contains a history of what occurred, but FundQueue is now altered. We took the first FundQueue object, spent it entirely for 600 points, then discarded it, as we can no longer spend it. Then we moved on to the second FundQueue object, took 400 out of it, and kept it, as it still has 600 points we can spend. Finally, notice how the total balance is deducted by the amount provided in the API call.
    
-   ![jamie_admin_3](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_3.PNG)
+   ![jamie_admin_3](files/jamie_admin_3.PNG)
     
    Let us deduct by 1000 again:
    
-   ![jamie_5](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_5.PNG)
+   ![jamie_5](files/jamie_5.PNG)
    
    Here is our admin page after this operation. What is notable here is that all balances are zero and our FundQueue is empty, as we have no points to spend.
    
-   ![jamie_admin_4](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/jamie_admin_4.PNG)
+   ![jamie_admin_4](files/jamie_admin_4.PNG)
    
 ## Try it
 
@@ -257,7 +257,7 @@ For the main application functionality we have [create](#create) and [deduct](#d
    
    If you do not have access to the admin panel, it is recommended to setup your own instance or open the all fields link. The latter achieves the same result as admin but is less concise and readable. It also does not filter by user
    
-   ![admin](https://raw.githubusercontent.com/faisalaljishi/django_point_API/master/files/admin.PNG)
+   ![admin](files/admin.PNG)
    
 ## Technologies
   
