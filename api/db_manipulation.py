@@ -51,9 +51,9 @@ class TransactionManager:
 
     def deductTransaction(self, instance):
         #expect the value to be formatted as -x, meaning we want to deduct x amount of points
-        if instance['points'] >= 0:
+        if int(instance['points']) >= 0:
             raise Exception('Error, cannot deduct a positive value or 0')
-        thisUser, points = instance['user'], instance['points']
+        thisUser, points = instance['user'], int(instance['points'])
 
         #get the fundq for that user, the object, and turn points positive
         #fundq is automatically ordered from oldest to newest

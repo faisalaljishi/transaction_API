@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 #https://stackoverflow.com/questions/4609841/git-merge-and-keep-separate
 #Use this.
 
+#CONFIG VARS ON HEROKU
+#DJANGO_DEBUG= False
+#SSL_REDIRECT = True
+#DJANGO_SECRET_KEY = XXX
 import os
 from pathlib import Path
 
@@ -23,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 #Deploy settings:
-SECURE_SSL_REDIRECT=True
+SECURE_SSL_REDIRECT=os.environ.get('SSL_REDIRECT', '') == 'True'
 SESSION_COOKIE_SECURE=True
 CSRF_COOKIE_SECURE=True
 

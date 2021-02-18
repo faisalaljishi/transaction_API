@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, get_list_or_404
 from rest_framework import status
@@ -40,21 +40,27 @@ def overview(request):
 
 @api_view(['GET'])
 def allFields(request):
-    user = get_list_or_404(User)
+    user = User.objects.all()
     user_serializer = UserSerializer(user, many=True)
-    payer = get_list_or_404(Payer)
+    payer = Payer.objects.all()
     payer_serializer = PayerSerializer(payer, many=True)
-    balance = get_list_or_404(Balance)
+    balance = Balance.objects.all()
     balance_serializer = BalanceSerializer(balance, many=True)
-    transaction = get_list_or_404(Transaction)
+    transaction = Transaction.objects.all()
     transaction_serializer = TransactionSerializer(transaction, many=True)
-    fundqueue = get_list_or_404(FundQueue)
+    fundqueue = FundQueue.objects.all()
     fundqueue_serializer = FundQueueSerializer(fundqueue, many=True)
-    return Response([user_serializer.data,
+
+    respond_list = [user_serializer.data,
                     payer_serializer.data,
                     balance_serializer.data,
                     transaction_serializer.data,
-                    fundqueue_serializer.data,], status=200)
+                    fundqueue_serializer.data,]
+    allFalse = not any(respond_list)
+    if allFalse:
+        return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+    else:
+        return Response(respond_list, status=200)
 
 class User_API:
     @api_view(['GET'])
@@ -148,7 +154,7 @@ class Transaction_API:
         if int(serializer.initial_data['points']) >= 0:
             return Response({'Error: Deduct only takes negative values.'}, status=400)
         print(serializer.initial_data['points'], user.getBalance())
-        if -serializer.initial_data['points'] > user.getBalance():
+        if -int(serializer.initial_data['points']) > user.getBalance():
             return Response({'Error: Not enough funds to deduct this amount of points.'}, status=400)
         spent = t.deductTransaction(serializer.initial_data)
         print(spent)
@@ -172,37 +178,3 @@ class FundQueue_API:
         fundQueue = get_list_or_404(FundQueue, user=u)#FundQueue.objects.get(id=pk)
         serializer = FundQueueSerializer(fundQueue, many=True)
         return Response(serializer.data, status=200)
-
-
-
-
-
-
-
-
-#
-# @api_view(['GET'])
-# def userInfo_Balances(request):
-#     # returning payers
-#     user = User.objects.get(name=request.data['user'])
-#     if not user:
-#         return Response({'Error: User does not exist.'}, status=400)
-#     users_balances = get_list_or_404(Balance, user=user)
-#     # payers = Balance.objects.all().filter(user=user)
-#     users_balances = BalanceSerializer(users_balances, many=True)
-#     return Response(users_balances.data, status=201)
-#
-# @api_view(['GET'])
-# def userInfo(request):
-#     # returning payers
-#     user = User.objects.get(name=request.data['user'])
-#     if not user:
-#         return Response({'Error: User does not exist.'}, status=400)
-#
-#     transaction = get_list_or_404(Transaction, user=user)  # Transaction.objects.get(id=pk)
-#     serializer = TransactionSerializer(transaction, many=True)
-#     users_balances = get_list_or_404(Balance, user=user)
-#     # balances = Balance.objects.all().filter(user=user)
-#     users_balances = BalanceSerializer(users_balances, many=True)
-#
-#     return Response(users_balances.data, status=201)

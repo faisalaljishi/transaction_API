@@ -46,7 +46,7 @@
   
    The database stores 5 types. (User, Payer, Balance, Transaction and FundQueue)
    
-   The model User stores all the names of users.
+   The model User stores all the names of users and respective total balances.
    
    The model Payer stores all the names of payers.
    
