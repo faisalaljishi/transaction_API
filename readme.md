@@ -25,7 +25,7 @@
    
    To read about the problem, general design choices and to see a visual demo, start at the [Task Description](#task-description) section. It is recommended to start here.
    
-   To read more about the main logic of the project navigate, to the [Proof of Concept](#proof-of-concept) section. This section also relates the Django Models to simpler data structures to better understanding their usage.
+   To read more about the main logic of the project navigate, to the [Proof of Concept](#proof-of-concept) section. This section also relates the Django Models to simpler data structures for a better understanding of their usage.
    
    To read about an easy way to follow what is occurring in the database as you make changes, read the [Admin](#admin) section.
    
