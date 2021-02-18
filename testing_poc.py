@@ -6,10 +6,8 @@ def test1():
     u.earn("DANNON", 300)
     u.earn("UNILEVER", 200)
     u.spend(200)
-    #pay("DANNON", -200)
     u.earn("MILLER COORS", 10000)
     u.earn("DANNON", 1000)
-    #pay("DANNON", -400)
     u.spend(5000)
     print(u.payers)
     print(u.fundQueue)
@@ -59,7 +57,6 @@ def test5():
     u = User()
     for _ in range(25):
         u.earn("DANNON", 100)
-    #u.spend(2000)
     u.spend(2500)
     print(u.payers)
     print(u.fundQueue)
