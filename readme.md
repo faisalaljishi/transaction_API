@@ -121,14 +121,15 @@
    
 ## Try it
 
-To try the app for yourself, use this [link](https://django-points-api.herokuapp.com/api/). The database is initialized with some test data. This [link](https://django-points-api.herokuapp.com/api/overview) will show you all the information the database contains.
+To try the app for yourself, use this [link](https://django-points-api.herokuapp.com/api/). The link will display all the API calls the database can perform.
 
-[All Fields](https://django-points-api.herokuapp.com/api/user-detail) and the list links are self explanatory, simply click the links. The database should be empty, so we should get back a 404 not found response.
+The database will initially be empty. The database should be empty because it is configured for SQLite3, and Heroku restarts will cause the files to get wiped around each day or each time the code is updated.
 
-Now let us add some data to the database. Take a look at the api_requests.json for the sample data that we will send.
+Now let us add some data to the database. Since the database is empty we should run [test_fill.sh](test_fill.sh) or [test_fill.cmd](test_fill.cmd) to initialize it with some test users and test transactions. Take a look at the [api_requests.json](api_requests.json) for the sample data that will be sent. Note that you don't need to download the entire directory, rather simply [test_fill.sh](test_fill.sh) to autofill the server. You could also skip this step and rather go directly to the [create link](https://django-points-api.herokuapp.com/api/create) and fill data in manually.
 
+Now that we have data in our database, we can use All, List, Detail, and Filter to request data from the server. 
 
-
+[All Fields](https://django-points-api.herokuapp.com/api/all) and the list links are self explanatory. Simply click the links and you will get a list of all objects of that type. The database should be empty, so we should get back a 404 not found response. 
 
 Detail and Filter require a primary key to pull up the specific object desired. An object with that primary key must exist or a 404 will be returned. Read more from the [Api Usage](#api-usage) section to learn about the primary keys.
 
@@ -162,7 +163,7 @@ For the main application functionality we have [create](#create) and [deduct](#d
 
 ## Proof of Concept
 
-   This was a nifty way to test the main logic of the project. If you are uninterested in the database or Django, take a look at [proof_of_concept.py](https://github.com/faisalaljishi/django_point_API/blob/master/points/proof_of_concept.py) and the related [testing](https://github.com/faisalaljishi/django_point_API/blob/master/points/testing_poc.py) file for the main logic of the project. This file also helped me map out what to do, and which directions to take the project in.
+   This was a nifty way to test the main logic of the project. If you are uninterested in the database or Django, take a look at [proof_of_concept.py](proof_of_concept.py) and the related [testing](testing_poc.py) file for the main logic of the project. This file also helped me map out what to do, and which directions to take the project in.
   
   The Django User Model corresponds to `class User` in the proof_of_concept. In django we create a new user by making a new User Model object and similarly, we create new users by creating a new object in the proof_of_concept.py file.
   
@@ -180,8 +181,7 @@ For the main application functionality we have [create](#create) and [deduct](#d
     
    ### Background:
    
-   To quickly get started with this project visit this [link](https://django-points-api.herokuapp.com/api/16), (may not work if Heroku link is not up) 
-   which a hosted version of the project. The page links all the API requests possible. Reading the [Admin](#admin) section is also recommended to easily view any changes to the database.
+   To quickly get started with this project visit this [link](https://django-points-api.herokuapp.com/api/), which a hosts version of the project. The page links all the API requests possible. Reading the [Admin](#admin) section is also recommended to easily view any changes to the database.
    
    First, we have the All Fields link, which details all the data the database currently contains. Note that most of these are not meant to be modified by the API, the API should only list database entries, award a user points, or charge a user points.
    
@@ -268,7 +268,7 @@ For the main application functionality we have [create](#create) and [deduct](#d
     Django REST Framework 3.12.2
     
    For the production version the requirements are:
-        
+   
         asgiref==3.3.1
         dj-database-url==0.5.0
         Django==3.1.6
@@ -284,16 +284,15 @@ For the main application functionality we have [create](#create) and [deduct](#d
 
 ## Setup
   
-   To setup this project, simply download the files, [install the requirements](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/development_environment) and in the ./points/points/ directory, run the following command :
+   To setup this project, simply download the files, [install the requirements](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/development_environment) and run the following command:
    
     python manage.py runserver
     
    Then navigate to https://127.0.0.1:8000/api/ on your web browser of your choice.
     
-   To deploy use the hosting branch which is produced for set up with heroku.
+   To deploy use the hosting branch which is produced for set up with Heroku.
 
         git push heroku master
-        git push heroku hosting:master 
         heroku run python manage.py migrate
         heroku open
    
@@ -301,4 +300,4 @@ For the main application functionality we have [create](#create) and [deduct](#d
         
         
 ## About Me
-   This was my first project in Django, and first web development project involving a database. I really enjoyed making this project, and about managing a database and back-end engineering. I tried to implement best practices, but I am still learning about Django.
+   This was my first project in Django, and first web development project involving a database. I really enjoyed making this project, and about managing a database and back-end engineering. I tried to implement best practices where I could.

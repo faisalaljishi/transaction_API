@@ -26,6 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
+
+#To set secure ssl permanently true, follow this https://www.programmersought.com/article/14813002710/
 #Deploy settings:
 SECURE_SSL_REDIRECT=os.environ.get('SSL_REDIRECT', '') == 'True'
 SESSION_COOKIE_SECURE=True
