@@ -6,14 +6,6 @@ class User:
         self.totalValue = 0
         self.fundQueue = []
 
-    #costly operation, keep track of total as you go
-    def updateTotal(self):
-        self.totalValue = sum(self.payers.values())
-
-    def updateQueue(self, newFunds):
-        self.fundQueue = newFunds
-
-
     def addTransaction(self, payer, value):
         payload = (payer,value, len(self.transactionHistory))
         self.transactionHistory.append(payload)
@@ -24,42 +16,49 @@ class User:
         else:
             self.payers[payer] = value
 
-        self.updateTotal()
+        self.totalValue += value
 
     def error(self):
         raise Exception('Error, cannot pay user negative values')
 
     def earn(self, payer, value):
-        return self.addTransaction(payer, value) if value > 0 else self.error()
+        self.addTransaction(payer, value) if value > 0 else self.error()
 
-    def spend(self, value):
-        if self.totalValue < value:
+    def spend(self, spend_amount):
+        if self.totalValue < spend_amount:
             raise Exception('Not Enough Funds')
         new_funds = []
-        while(self.fundQueue and value>0):
+
+        def spend_helper(spendable_points, spend_amount, balance):
+            spendable_points -= spend_amount
+            balance -= spend_amount
+            self.totalValue -= spend_amount
+            payload = (payer, -spend_amount, len(self.transactionHistory))
+            self.transactionHistory.append(payload)
+
+            return spendable_points, balance
+
+        while(self.fundQueue and spend_amount>0):
             payload = self.fundQueue.pop(0)
-            payer, curr, id = payload
+            payer, spendable_points, id = payload
             balance = self.payers[payer]
-            if curr >= value:
-                curr -=value
-                balance -= value
-                if curr != 0:
-                    payload = (payer, curr, id)
+
+            if spendable_points >= spend_amount:
+                spendable_points, balance = spend_helper(spendable_points, spend_amount, balance)
+                if spendable_points != 0:
+                    payload = (payer, spendable_points, id)
                     new_funds.append(payload)
-                payload = (payer, -value, len(self.transactionHistory))
-                self.transactionHistory.append(payload)
-                value = 0
-            elif curr < value: #for readablity
-                value -= curr
-                balance -= curr
-                payload = (payer, -curr, len(self.transactionHistory))
-                self.transactionHistory.append(payload)
+
+                spend_amount = 0
+            # if spendable_points < spend_amount
+            else:
+                spend_amount, balance = spend_helper(spend_amount, spendable_points, balance)
 
             self.payers[payer] = balance
 
-        if (not self.fundQueue) and value>0:
+        if(not self.fundQueue) and spend_amount>0:
             print('something went terribly wrong')
 
         new_funds += self.fundQueue
-        self.updateTotal()
-        self.updateQueue(new_funds)
+        self.fundQueue = new_funds
+        print(self.totalValue)
