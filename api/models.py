@@ -25,7 +25,7 @@ class User(models.Model):
 
 #Contains the company, and all the balances it maintains for each user.
 class Payer(models.Model):
-    name    = models.CharField(max_length=200, help_text='Name of payer', unique=True, primary_key=True)
+    name = models.CharField(max_length=200, help_text='Name of payer', unique=True, primary_key=True)
 
     class Meta:
         ordering = ['name']

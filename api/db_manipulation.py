@@ -6,9 +6,9 @@ class TransactionManager:
 
     #Creates user, payer and balance if they do not exist
     def incaseDNE(self, serializer):
-        user, pay = serializer.initial_data['user'], serializer.initial_data['payer']
+        user, pay = serializer.initial_data.get('user'), serializer.initial_data.get('payer')
         if DEBUG: print(user, pay)
-
+        print(user, pay)
         #Creates new user and payer if they do not exist
         #b1,b2 are True if obj exists, we are creating, we know they dont
         userObj, b1 = User.objects.get_or_create(name=user)
@@ -27,7 +27,7 @@ class TransactionManager:
         # User and payer will always exist because incaseDNE is called before addTransaction, but balance may or may not exist.
         userObj, boolean1 = User.objects.get_or_create(name=user)
         payerObj, boolean2 = Payer.objects.get_or_create(name=payer)
-        balanceObj, boolean3 = Balance.objects.get_or_create(key=keyCreate(payer, user))
+        balanceObj, boolean3 = Balance.objects.get_or_create(key=bal_key, user= userObj, payer= payerObj)
 
         if DEBUG:  print(userObj, payerObj, balanceObj)
         if DEBUG: print(boolean1, boolean2, boolean3)
