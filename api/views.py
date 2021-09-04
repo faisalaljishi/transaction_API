@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse, Http404
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, get_list_or_404
+from django.contrib.sites.shortcuts import get_current_site
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
@@ -17,6 +18,7 @@ def home(request):
 # Landing /api/ page
 @api_view(['GET'])
 def overview(request):
+    domain = get_current_site(request).domain
     api_urls = {
         'All Fields': f'http://{domain}/api/all/',
         'Users': '',
@@ -136,7 +138,7 @@ class Transaction_API:
         t =TransactionManager()
         t.incaseDNE(serializer)
 
-        if int(serializer.initial_data['points']) <= 0:
+        if int(serializer.initial_data.get('points')) <= 0:
             return Response({'Error: Create only takes positive values.'}, status=400)
 
         if serializer.is_valid():

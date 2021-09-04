@@ -22,7 +22,9 @@ class TransactionManager:
 
     def addTransaction(self, instance):
         user, payer, points = instance.user, instance.payer, instance.points
+        bal_key = keyCreate(payer, user)
         if DEBUG: print(user, payer, points)
+        if DEBUG: print(bal_key)
 
         # User and payer will always exist because incaseDNE is called before addTransaction, but balance may or may not exist.
         userObj, boolean1 = User.objects.get_or_create(name=user)
