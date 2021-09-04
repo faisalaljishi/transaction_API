@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse, Http404
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, get_list_or_404
+from django.contrib.sites.shortcuts import get_current_site
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
@@ -17,27 +18,30 @@ def home(request):
 # Landing /api/ page
 @api_view(['GET'])
 def overview(request):
+    domain = get_current_site(request).domain
     api_urls = {
-        'All Fields': 'http://django-points-api.herokuapp.com/api/all/',
-        'Lists': '',
-        'User List': 'http://django-points-api.herokuapp.com/api/users/',
-        'Payer List': 'http://django-points-api.herokuapp.com/api/payers/',
-        'Balance List': 'http://django-points-api.herokuapp.com/api/balances/',
-        'Transaction List': 'http://django-points-api.herokuapp.com/api/transactions/',
-        'FundQueue List': 'http://django-points-api.herokuapp.com/api/funds/',
-        'Details': '',
-        'User Detail': 'http://django-points-api.herokuapp.com/api/user-detail/<str:pk>/',
-        'Payer Detail': 'http://django-points-api.herokuapp.com/api/payer-detail/<str:pk>/',
-        'Balance Detail': 'http://django-points-api.herokuapp.com/api/balance-detail/<str:pk>/',
-        'Transaction Detail': 'http://django-points-api.herokuapp.com/api/transaction-detail/<str:pk>/',
-        'FundQueue Detail': 'http://django-points-api.herokuapp.com/api/fund-detail/<str:pk>/',
-        'Filters':'',
-        'Balance Filter': 'http://django-points-api.herokuapp.com/api/balance-filter/<str:pk>',
-        'Transaction Filter': 'http://django-points-api.herokuapp.com/api/transaction-filter/<str:pk>',
-        'FundQueue Filter': 'http://django-points-api.herokuapp.com/api/fund-filter/<str:pk>',
+        'All Fields': f'http://{domain}/api/all/',
+        'Users': '',
+        'User List': f'http://{domain}/api/users/',
+        'User Detail': f'http://{domain}/api/user-detail/<str:pk>/',
+        'Payers': '',
+        'Payer List': f'http://{domain}/api/payers/',
+        'Payer Detail': f'http://{domain}/api/payer-detail/<str:pk>/',
+        'Balances': '',
+        'Balance List': f'http://{domain}/api/balances/',
+        'Balance Detail': f'http://{domain}/api/balance-detail/<str:pk>/',
+        'Balance Filter': f'http://{domain}/api/balance-filter/<str:pk>',
+        'Transactions': '',
+        'Transaction List': f'http://{domain}/api/transactions/',
+        'Transaction Detail': f'http://{domain}/api/transaction-detail/<str:pk>/',
+        'Transaction Filter': f'http://{domain}/api/transaction-filter/<str:pk>',
+        'Funds':'',
+        'FundQueue List': f'http://{domain}/api/funds/',
+        'FundQueue Detail': f'http://{domain}/api/fund-detail/<str:pk>/',
+        'FundQueue Filter': f'http://{domain}/api/fund-filter/<str:pk>',
         'Main Functionality': '',
-        'Create' : 'http://django-points-api.herokuapp.com/api/create/',
-        'Deduct': 'http://django-points-api.herokuapp.com/api/deduct/',
+        'Create' : f'http://{domain}/api/create/',
+        'Deduct': f'http://{domain}/api/deduct/',
     }
     return Response(api_urls)
 
@@ -134,7 +138,7 @@ class Transaction_API:
         t =TransactionManager()
         t.incaseDNE(serializer)
 
-        if int(serializer.initial_data['points']) <= 0:
+        if int(serializer.initial_data.get('points')) <= 0:
             return Response({'Error: Create only takes positive values.'}, status=400)
 
         if serializer.is_valid():
@@ -151,7 +155,7 @@ class Transaction_API:
         serializer = TransactionSerializer(data = request.data)
         t =TransactionManager()
         #Could be done with validation but this is simpler for now.
-        user =User.objects.get(name=serializer.initial_data['user'])
+        user =User.objects.get(name=serializer.initial_data.get('user'))
         if not user:
             return Response({'Error: User does not exist.'}, status=400)
         if int(serializer.initial_data['points']) >= 0:
