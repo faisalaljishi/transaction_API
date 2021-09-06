@@ -69,7 +69,7 @@ class TransactionManager:
         # This is the Q of the available funds to be spent in order
         for fq in fundq:
             # if the points left is less than 0, we are done
-            if points < 0:
+            if points <= 0:
                 break
 
             # from fq, produce the payer and the points available
