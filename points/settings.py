@@ -42,7 +42,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 # DEBUG= False
 
-ALLOWED_HOSTS = ['django-points-api.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['django-points-api.herokuapp.com','127.0.0.1', '0.0.0.0', 'localhost']
 
 
 # Application definition
@@ -96,11 +96,8 @@ WSGI_APPLICATION = 'points.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME':'mydb',
-        'USER': 'admin',
-        'PASSWORD':'postgres',
-        'HOST': 'localhost'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
