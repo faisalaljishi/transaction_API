@@ -100,6 +100,9 @@ class TransactionManager:
                 # deduct the points from the transaction and payers+user balance, and update the users total
                 currPoints, currBalance = points_update(currPoints, points)
 
+                #should have been consumed entirely
+                points = 0
+
                 # if the transaction on the Q is zero, we can discard it completely,
                 # otherwise we need to keep it there until it is depleted
                 if currPoints != 0:
@@ -114,7 +117,7 @@ class TransactionManager:
             # if currPoints < points
             else:
                 # we are going to use up currPoints completely, as it smaller than the points we want to spend
-                currPoints, currBalance = points_update(points, currPoints)
+                points, currBalance = points_update(points, currPoints)
 
                 # we will remove the funds we just spent from
                 fq.delete()
