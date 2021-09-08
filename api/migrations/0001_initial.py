@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('points', models.IntegerField()),
-                ('date', models.DateTimeField()),
+                ('date', models.DateTimeField(auto_now_add=True)),
                 ('payer', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='api.payer')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='api.user')),
             ],
@@ -49,7 +49,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('points', models.IntegerField()),
-                ('date', models.DateTimeField()),
+                ('date', models.DateTimeField(auto_now_add=True)),
                 ('payer', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='api.payer')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='api.user')),
             ],
@@ -60,7 +60,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Balance',
             fields=[
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, primary_key=True, serialize=False, to='api.user')),
+                ('key', models.CharField(help_text='Balance key: (Payer.name, User.name)', max_length=200, primary_key=True, serialize=False)),
                 ('balance', models.IntegerField(default=0)),
                 ('payer', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='api.payer')),
             ],

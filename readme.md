@@ -1,4 +1,5 @@
 # Table of Contents
+* [Update](#update)
 * [About & Directory](#about-&-directory)
 * [Task Description](#task-description)
 * [General Design Info](#general-design-info)
@@ -14,6 +15,11 @@
 * [Technologies](#technologies)
 * [Setup](#setup)
 * [About Me](#about-me)
+
+## Update
+
+Updated application to support PostgreSQL on heroku. Also updated models, views, and db_manipulation for bugfix and code cleanup purposes. 
+
 
 ## About & Directory
    
@@ -33,7 +39,7 @@
    
    To learn more about using the API, navigate over to the [API Usage](#api-usage) section. 
    
-   For a [link to a hosted version](https://django-points-api.herokuapp.com/api/) of the project to quickly test and run without local installation. 
+   For a [link to a hosted version](https://django-transaction-api.herokuapp.com/api/) of the project to quickly test and run without local installation. 
    
 ## Task Description
   
@@ -121,45 +127,45 @@
    
 ## Try it
 
-To try the app for yourself, use this [link](https://django-points-api.herokuapp.com/api/). The link will display all the API calls the database can perform.
+To try the app for yourself, use this [link](https://django-transaction-api.herokuapp.com/api/). The link will display all the API calls the database can perform.
 
 The database will initially be empty. The database should be empty because it is configured for SQLite3, and Heroku restarts will cause the files to get wiped around each day or each time the code is updated. This is convenient for now, as having an empty database makes it easy to demo and test. We can migrate to a database like Postgres for a more permanent data storage solution.
 
-Now let us add some data to the database. Since the database is empty we should run [test_fill.sh](test_fill.sh) or [test_fill.cmd](test_fill.cmd) to initialize it with some test users and test transactions. Take a look at the [api_requests.json](api_requests.json) for the sample data that will be sent. Note that you don't need to download the entire directory, rather simply [test_fill.sh](test_fill.sh) to autofill the server. You could also skip this step and rather go directly to the [create link](https://django-points-api.herokuapp.com/api/create) and fill data in manually.
+Now let us add some data to the database. Since the database is empty we should run [test_fill.sh](test_fill.sh) or [test_fill.cmd](test_fill.cmd) to initialize it with some test users and test transactions. Take a look at the [api_requests.json](api_requests.json) for the sample data that will be sent. Note that you don't need to download the entire directory, rather simply [test_fill.sh](test_fill.sh) to autofill the server. You could also skip this step and rather go directly to the [create link](https://django-transaction-api.herokuapp.com/api/create) and fill data in manually.
 
 Now that we have data in our database, we can use All, List, Detail, and Filter to request data from the server. 
 
-[All Fields](https://django-points-api.herokuapp.com/api/all) and the list links are self explanatory. Simply click the links and you will get a list of all objects of that type. The database should be empty, so we should get back a 404 not found response. 
+[All Fields](https://django-transaction-api.herokuapp.com/api/all) and the list links are self explanatory. Simply click the links and you will get a list of all objects of that type. The database should be empty, so we should get back a 404 not found response. 
 
 Detail and Filter require a primary key to pull up the specific object desired. An object with that primary key must exist or a 404 will be returned. Read more from the [Api Usage](#api-usage) section to learn about the primary keys.
 
-[Joe Schmoe User Detail](https://django-points-api.herokuapp.com/api/user-detail/Joe%20Schmoe/)
+[Joe Schmoe User Detail](https://django-transaction-api.herokuapp.com/api/user-detail/Joe%20Schmoe/)
 
-[Jane Schmoe User Detail](https://django-points-api.herokuapp.com/api/user-detail/Jane%20Schmoe/)
+[Jane Schmoe User Detail](https://django-transaction-api.herokuapp.com/api/user-detail/Jane%20Schmoe/)
 
-[Dannon Payer Detail](https://django-points-api.herokuapp.com/api/payer-detail/DANNON/)
+[Dannon Payer Detail](https://django-transaction-api.herokuapp.com/api/payer-detail/DANNON/)
 
-[Dannon, Joe Schmoe Balance Detail](https://django-points-api.herokuapp.com/api/balance-detail/DANNON,%20Joe%20Schmoe/)
+[Dannon, Joe Schmoe Balance Detail](https://django-transaction-api.herokuapp.com/api/balance-detail/DANNON,%20Joe%20Schmoe/)
 
 Transactions and FundQueue objects require you to know the specific ID of the object you are looking for.
 
-[Transaction Detail](https://django-points-api.herokuapp.com/api/transaction-detail/3/)
+[Transaction Detail](https://django-transaction-api.herokuapp.com/api/transaction-detail/3/)
 
 Let us say we want to see the all the payer balances of a single user. Using the balance filter link:
 
-[Joe Schmoe Balance Filter](https://django-points-api.herokuapp.com/api/balance-filter/Joe%20Schmoe/)
+[Joe Schmoe Balance Filter](https://django-transaction-api.herokuapp.com/api/balance-filter/Joe%20Schmoe/)
 
 All the transactions or fundqueue objects related to a single user:
 
-[Joe Schmoe Transaction Filter](https://django-points-api.herokuapp.com/api/transaction-filter/Joe%20Schmoe/)
+[Joe Schmoe Transaction Filter](https://django-transaction-api.herokuapp.com/api/transaction-filter/Joe%20Schmoe/)
 
-[Joe Schmoe FundQueue Filter](https://django-points-api.herokuapp.com/api/fund-filter/Joe%20Schmoe/)
+[Joe Schmoe FundQueue Filter](https://django-transaction-api.herokuapp.com/api/fund-filter/Joe%20Schmoe/)
 
 For the main application functionality we have [create](#create) and [deduct](#deduct). The previous links are to the respective API Usage sections where you can read more about their usage. The below links are redirect to the website.
 
-[Create](https://django-points-api.herokuapp.com/api/create/)
+[Create](https://django-transaction-api.herokuapp.com/api/create/)
 
-[Deduct](https://django-points-api.herokuapp.com/api/deduct/)
+[Deduct](https://django-transaction-api.herokuapp.com/api/deduct/)
 
 ## Proof of Concept
 
@@ -181,7 +187,7 @@ For the main application functionality we have [create](#create) and [deduct](#d
     
    ### Background:
    
-   To quickly get started with this project visit this [link](https://django-points-api.herokuapp.com/api/), which a hosts version of the project. The page links all the API requests possible. Reading the [Admin](#admin) section is also recommended to easily view any changes to the database.
+   To quickly get started with this project visit this [link](https://django-transaction-api.herokuapp.com/api/), which a hosts version of the project. The page links all the API requests possible. Reading the [Admin](#admin) section is also recommended to easily view any changes to the database.
    
    First, we have the All Fields link, which details all the data the database currently contains. Note that most of these are not meant to be modified by the API, the API should only list database entries, award a user points, or charge a user points.
    
