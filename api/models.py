@@ -36,7 +36,7 @@ class Payer(models.Model):
 def keyCreate(payer, user):
     return ', '.join([str(payer), str(user)])
 
-# #Helper class to store all the balances of users for each company
+#Helper class to store all the balances of users for each company
 class Balance(models.Model):
     key = models.CharField(max_length=200, help_text='Balance key: (Payer.name, User.name)', primary_key=True)
     user = models.ForeignKey('User', on_delete=models.PROTECT, null=False)
